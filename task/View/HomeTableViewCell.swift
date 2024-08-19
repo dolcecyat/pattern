@@ -3,49 +3,42 @@
 //  task
 //
 //  Created by Анатолий Коробских on 10.08.2024.
-//
+
 
 import UIKit
 
-
 class HomeTableViewCell: UITableViewCell {
-
+    
     // MARK: - Prorerties
     
-   static let homeTableViewCell = "HomeTableViewCell"
+
+    static let homeTableViewCell = "HomeTableViewCell"
     
-    private var rtxf: UITextField{
-        let rtx = UITextField()
-        rtx.borderStyle = .roundedRect
-        rtx.frame = CGRect(x:1, y:1 ,width: 350, height: 103)
-        rtx.layer.shadowOffset = CGSize(width: 0, height: 2)
-        rtx.layer.shadowColor = UIColor.black.cgColor
-        rtx.layer.shadowOpacity = 0.5
-        rtx.layer.shadowRadius = 2.0
-        rtx.layer.masksToBounds = false
-        rtx.layer.cornerRadius = 10
-        rtx.clipsToBounds = false
-        return rtx
-    }
- 
-    internal var delegate: MyTableViewCellDelegate?
-    var index : IndexPath?
+    private var cellFrame: UIView = {
+        let frame = UIView()
+        frame.backgroundColor = .white
+//        frame.layer.masksToBounds = false
+        frame.layer.shadowColor = UIColor.gray.cgColor
+        frame.layer.shadowOpacity = 0.5
+        frame.layer.shadowOffset = CGSize(width: 4, height: 4)
+        frame.layer.shadowRadius = 5
     
-    private let myImageView: UIImageView = {
+        return frame
+    }()
+    
+     let myImageView: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFit
         im.image = UIImage(named: "robot")
         return im
     }()
-
-    private let likebutton: UIButton = {
-        let butt = UIButton()
-        butt.setTitle("", for: .normal)
-        butt.setImage(UIImage(named: "greyHeart"), for: .normal)
-       
-        butt.frame = CGRect(x: 322, y: 76, width: 30, height: 30)
-        butt.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
-        return butt
+    
+     let likebutton: UIButton = {
+        let like = UIButton()
+        like.setTitle("", for: .normal)
+        like.setImage(UIImage(named: "greyHeart"), for: .normal)
+        like.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
+        return like
     }()
     
     private let myLabel: UILabel = {
@@ -71,55 +64,70 @@ class HomeTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.addView()
         self.setupUI()
-
-       
-    
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func addView(){
+        
+        contentView.addSubview(cellFrame)
+        
+        cellFrame.addSubview(myImageView)
+        cellFrame.addSubview(myLabel)
+        cellFrame.addSubview(viewLabel)
+        cellFrame.addSubview(likebutton)
+    }
+    
     func setupUI() {
         
-        self.contentView.addSubview(rtxf)
-        self.contentView.addSubview(myImageView)
-        self.contentView.addSubview(myLabel)
-        self.contentView.addSubview(viewLabel)
-        self.contentView.addSubview(likebutton)
-        
+        cellFrame.translatesAutoresizingMaskIntoConstraints = false
         myImageView.translatesAutoresizingMaskIntoConstraints = false
         myLabel.translatesAutoresizingMaskIntoConstraints = false
         viewLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        likebutton.translatesAutoresizingMaskIntoConstraints = false
+        cellFrame.layer.masksToBounds = false
+      
         NSLayoutConstraint.activate([
+        cellFrame.widthAnchor.constraint(equalToConstant: 350),
+        cellFrame.heightAnchor.constraint(equalToConstant: 103),
+        cellFrame.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+        cellFrame.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -4),
+        cellFrame.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 4),
+        cellFrame.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -4),
         
-        myImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor,constant: 6),
-        myImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 1),
+        myImageView.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 14),
+        myImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 1),
         myImageView.heightAnchor.constraint(equalToConstant: 60),
         myImageView.widthAnchor.constraint(equalToConstant: 80),
         
+        myLabel.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 22),
         myLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor , constant: 2),
-        myLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 22),
         
-        viewLabel.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 22),
-        viewLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 8),
+        viewLabel.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 14),
+        viewLabel.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 12),
+        viewLabel.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -100),
         
+        likebutton.bottomAnchor.constraint(equalTo: cellFrame.bottomAnchor, constant: -4),
+        likebutton.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -6),
+        likebutton.heightAnchor.constraint(equalToConstant: 30),
+        likebutton.widthAnchor.constraint(equalToConstant: 30)
         ])
     }
-    
     // MARK: - Handlers
     
-    @objc func heartButtonPressed (){
-        if  likebutton.tag == 0{
+    @objc func heartButtonPressed() {
+        
+        if likebutton.tag == 0{
+            print("111")
             likebutton.setImage(UIImage(named:"redHeart"), for: .normal)
             likebutton.tag = 1
-           } else  {
-               likebutton.setImage(UIImage(named:"greyHeart"), for: .normal)
-               likebutton.tag = 0
+        } else  {
+           likebutton.setImage(UIImage(named:"greyHeart"), for: .normal)
+       likebutton.tag = 0
         }
     }
-    
 }
-

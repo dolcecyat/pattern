@@ -15,160 +15,170 @@ protocol HomeDisplayLogic: UIViewController {
 class HomeViewController: UIViewController, HomeDisplayLogic {
     
     //MARK: - MVP Properties
-    let numbers = ["1","2","3"]
+
     var presenter: HomePresentationProtocol?
-    var delegate: HomeControllerDelegate?
     
     //MARK: - UI properties
-    let homeTableViewCell = "HomeTableViewCell"
-    var tableView: UITableView!
-    let groupNames = ["Поведенческие","Порождающие","Структурные"]
-
     
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    var menuView = MenuView()
+    var menuViewLeftConstraint: NSLayoutConstraint?
+    var menuViewRightConstraint: NSLayoutConstraint?
+    
+    // MARK: - Data Properties
+    
+    private var shouldExpanding = true
+    let homeTableViewCell = "HomeTableViewCell"
+    private let groupNames = ["Поведенческие","Порождающие","Структурные"]
+
     // MARK: - Init
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
     }
   
     required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
-        setup()
-        
     }
-    
-    // MARK: - Setup
-    
-    private func setup() {
-      
-     
-    }
-  
+
     //MARK: - View lifecycle
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
-//        setupNavBar()
         addViews()
-        makeConstraints()
         setupViews()
-        setupAction()
-        view.backgroundColor = .white
+        makeConstraints()
+      
     }
-    
-    //MARK: - objc method
 }
 
 private extension HomeViewController {
     
     //MARK: - addViews
     
-    func addViews() {
-        configureHomeTableView()
+    private func addViews() {
+        
+        view.addSubview(tableView)
+        view.addSubview(menuView)
     }
     
     //MARK: - makeConstraints
     
-    func makeConstraints() {
-        
-    }
-    
-    //MARK: - setupViews
-    
-    func setupViews() {
-        setupNavBar()
-    }
-    
-    func configureHomeTableView() {
-        tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: homeTableViewCell)
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.allowsMultipleSelection = true
-        tableView.separatorInset.bottom = 10
-        tableView.backgroundColor = .white
-        
-        view.addSubview(tableView)
+    private func makeConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-    }
+        
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -view.frame.width)
+        menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.leftAnchor)
+        menuViewLeftConstraint?.isActive = true
+        menuViewRightConstraint?.isActive = true
 
+        menuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        menuView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        
+    }
+    
+    //MARK: - setupViews
+    
+    private func setupViews() {
+        setupNavBar()
+        configureHomeTableView()
+        menuView.backgroundColor = .darkGray
+//        menuView.isHidden = shouldExpanding
+    }
+    
+    private func configureHomeTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: homeTableViewCell)
+        
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.allowsMultipleSelection = true
+        tableView.separatorInset.bottom = 10
+    }
     
     //MARK: - setupNavBar
     
-    @objc func handleMenuToggle() {
-        delegate?.handleMenuController()
-    }
-    @objc func addButtonToggle() {
-        
-    }
-    
     func setupNavBar() {
-      
         self.navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.barStyle = .black
-    
+        
         navigationItem.title = "Паттерны проектирования"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButtonToggle))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButtonToggle))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
     }
     
-    //MARK: - setupAction
+    //MARK: - navigationBar Actions
     
-    func setupAction() {
-        
+    @objc private func handleMenuToggle() {
+        self.menuViewLeftConstraint?.isActive = false
+        self.menuViewRightConstraint?.isActive = false
+        if shouldExpanding == true {
+            // Активируем новые констрейнты для появления меню
+            menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor)
+            menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -100)
+            menuViewLeftConstraint?.isActive = true
+            menuViewRightConstraint?.isActive = true
+            
+        }else {
+            menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor)
+            menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -500)
+            menuViewLeftConstraint?.isActive = true
+            menuViewRightConstraint?.isActive = true
+        }
+                
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+            self.menuView.layoutIfNeeded()
+        }
+
+        self.shouldExpanding = !self.shouldExpanding
+//        menuView.isHidden = shouldExpanding
+    }
+    
+    @objc private func addButtonToggle() {
     }
 }
+    // MARK: - UITableViewDelegate,  UITableViewDataSource
+
 extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 113
-    
+         113
     }
     
     func tableView(_ tableView: UITableView,trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { /*[self]*/(action, sourceView, completionHandler) in
-//             let deleteItem = patterns[indexPath.row]
         }
          tableView.reloadData()
          let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
-        
-        }
-    
+    }
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return groupNames[section]
-        }
-        
-        
+         groupNames[section]
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-            return 30
-        }
-    
+         30
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
-            return numbers.count
-        }
-        
+         3
+    }
         
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 3
-        }
-        
+         3
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: homeTableViewCell, for: indexPath) as! HomeTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: homeTableViewCell, for: indexPath) as? HomeTableViewCell else {return UITableViewCell() }
             return cell
         }
     }
-
-extension HomeViewController: MyTableViewCellDelegate{
-    func didTabButton(index: Int) {
-    }
-}
