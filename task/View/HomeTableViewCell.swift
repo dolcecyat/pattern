@@ -17,10 +17,10 @@ class HomeTableViewCell: UITableViewCell {
     private var cellFrame: UIView = {
         let frame = UIView()
         frame.backgroundColor = .white
-//        frame.layer.masksToBounds = false
+        frame.layer.cornerRadius = 10
         frame.layer.shadowColor = UIColor.gray.cgColor
         frame.layer.shadowOpacity = 0.5
-        frame.layer.shadowOffset = CGSize(width: 4, height: 4)
+        frame.layer.shadowOffset = CGSize(width: 1, height: 1)
         frame.layer.shadowRadius = 5
     
         return frame
@@ -29,7 +29,7 @@ class HomeTableViewCell: UITableViewCell {
      let myImageView: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFit
-        im.image = UIImage(named: "robot")
+        im.image = UIImage(named: "strategy")
         return im
     }()
     
@@ -49,6 +49,16 @@ class HomeTableViewCell: UITableViewCell {
         label.text = "Прототип"
         return label
     }()
+    var descriptionLabel: UILabel = {
+          let description = UILabel()
+          
+          description.textColor = .lightGray
+          description.textAlignment = .left
+          description.font = .systemFont(ofSize: 9)
+          description.text = "Прототип — это порождающий паттерн проектирования, который позволяет копировать объекты, не вдаваясь в подробности их реализации."
+          description.numberOfLines = 2
+          return description
+      }()
     
     private let viewLabel: UILabel = {
         let label = UILabel()
@@ -80,6 +90,7 @@ class HomeTableViewCell: UITableViewCell {
         cellFrame.addSubview(myLabel)
         cellFrame.addSubview(viewLabel)
         cellFrame.addSubview(likebutton)
+        cellFrame.addSubview(descriptionLabel)
     }
     
     func setupUI() {
@@ -89,25 +100,29 @@ class HomeTableViewCell: UITableViewCell {
         myLabel.translatesAutoresizingMaskIntoConstraints = false
         viewLabel.translatesAutoresizingMaskIntoConstraints = false
         likebutton.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         cellFrame.layer.masksToBounds = false
       
         NSLayoutConstraint.activate([
-        cellFrame.widthAnchor.constraint(equalToConstant: 350),
-        cellFrame.heightAnchor.constraint(equalToConstant: 103),
-        cellFrame.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-        cellFrame.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -4),
-        cellFrame.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 4),
-        cellFrame.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -4),
+        cellFrame.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+        cellFrame.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -8),
+        cellFrame.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 8),
+        cellFrame.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -8),
         
         myImageView.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 14),
-        myImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 1),
-        myImageView.heightAnchor.constraint(equalToConstant: 60),
-        myImageView.widthAnchor.constraint(equalToConstant: 80),
+        myImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 4),
+        myImageView.heightAnchor.constraint(equalToConstant: 55),
+        myImageView.widthAnchor.constraint(equalToConstant: 70),
         
-        myLabel.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 22),
-        myLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor , constant: 2),
+        myLabel.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 18),
+        myLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor , constant: 6),
         
-        viewLabel.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 14),
+        descriptionLabel.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 2),
+        descriptionLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor,constant: 8),
+        descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
+        descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
+        
+        viewLabel.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 8),
         viewLabel.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 12),
         viewLabel.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -100),
         

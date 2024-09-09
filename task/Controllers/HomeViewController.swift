@@ -5,8 +5,8 @@
 //  Created by Анатолий Коробских on 09.08.2024.
 //
 
-
 import UIKit
+ 
 
 protocol HomeDisplayLogic: UIViewController {
     var presenter: HomePresentationProtocol? {get set}
@@ -22,11 +22,10 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     var menuView = MenuView()
-    var menuViewLeftConstraint: NSLayoutConstraint?
-    var menuViewRightConstraint: NSLayoutConstraint?
+    var menuViewWidthConstraint: NSLayoutConstraint?
     
     // MARK: - Data Properties
-    
+
     private var shouldExpanding = true
     let homeTableViewCell = "HomeTableViewCell"
     private let groupNames = ["Поведенческие","Порождающие","Структурные"]
@@ -59,7 +58,7 @@ private extension HomeViewController {
     private func addViews() {
         
         view.addSubview(tableView)
-        view.addSubview(menuView)
+        navigationController?.view.addSubview(menuView)
     }
     
     //MARK: - makeConstraints
@@ -71,15 +70,14 @@ private extension HomeViewController {
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         
-        menuView.translatesAutoresizingMaskIntoConstraints = false
-        menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -view.frame.width)
-        menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.leftAnchor)
-        menuViewLeftConstraint?.isActive = true
-        menuViewRightConstraint?.isActive = true
+        guard let navView = navigationController?.view else { return }
 
-        menuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        menuView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        
+        menuView.translatesAutoresizingMaskIntoConstraints = false
+        menuView.bottomAnchor.constraint(equalTo: navView.bottomAnchor).isActive = true
+        menuView.topAnchor.constraint(equalTo: navView.topAnchor).isActive = true
+        menuView.leftAnchor.constraint(equalTo: navView.leftAnchor).isActive = true
+        menuViewWidthConstraint = menuView.widthAnchor.constraint(equalToConstant: 0)
+        menuViewWidthConstraint?.isActive = true
     }
     
     //MARK: - setupViews
@@ -88,14 +86,14 @@ private extension HomeViewController {
         setupNavBar()
         configureHomeTableView()
         menuView.backgroundColor = .darkGray
-//        menuView.isHidden = shouldExpanding
+        menuView.layer.zPosition = 1
+
     }
     
     private func configureHomeTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: homeTableViewCell)
-        
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = true
@@ -117,31 +115,23 @@ private extension HomeViewController {
     //MARK: - navigationBar Actions
     
     @objc private func handleMenuToggle() {
-        self.menuViewLeftConstraint?.isActive = false
-        self.menuViewRightConstraint?.isActive = false
+        self.menuViewWidthConstraint?.isActive = false
         if shouldExpanding == true {
             // Активируем новые констрейнты для появления меню
-            menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor)
-            menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -100)
-            menuViewLeftConstraint?.isActive = true
-            menuViewRightConstraint?.isActive = true
-            
-        }else {
-            menuViewLeftConstraint = menuView.leftAnchor.constraint(equalTo: view.leftAnchor)
-            menuViewRightConstraint = menuView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -500)
-            menuViewLeftConstraint?.isActive = true
-            menuViewRightConstraint?.isActive = true
+            menuViewWidthConstraint = menuView.widthAnchor.constraint(equalTo: view.widthAnchor, constant:  -100)
+            menuViewWidthConstraint?.isActive = true
+        } else {
+            // Активируем новые констрейнты для скрытия меню
+            menuViewWidthConstraint = menuView.widthAnchor.constraint(equalToConstant: .zero)
+            menuViewWidthConstraint?.isActive = true
         }
                 
         UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-            self.menuView.layoutIfNeeded()
+            self.navigationController?.view.layoutIfNeeded()
         }
-
-        self.shouldExpanding = !self.shouldExpanding
-//        menuView.isHidden = shouldExpanding
+        self.shouldExpanding.toggle()
     }
-    
+ 
     @objc private func addButtonToggle() {
     }
 }
@@ -179,6 +169,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: homeTableViewCell, for: indexPath) as? HomeTableViewCell else {return UITableViewCell() }
+     
             return cell
         }
     }

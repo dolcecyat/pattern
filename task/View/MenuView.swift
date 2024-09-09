@@ -10,9 +10,6 @@ import UIKit
 
 private enum Constans {
     static let oopPrinciples = "Принципы ООП"
-    ///priss
-
-    #warning("T##message")
 }
 class MenuView: UIView {
     
@@ -28,6 +25,8 @@ class MenuView: UIView {
     let label2 = "Паттерны проектирования"
     let label3 = "Архитектурные паттерны"
     let label4 = "Принципы SOLID"
+    var menuViewWidthConstraint: NSLayoutConstraint?
+
     
     // MARK: - Init
     
@@ -56,9 +55,11 @@ class MenuView: UIView {
     
     func makeConstraints() {
         Vstack.translatesAutoresizingMaskIntoConstraints = false
-        
-        Vstack.topAnchor.constraint(equalTo: self.topAnchor, constant: 350).isActive = true
-        Vstack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30).isActive = true
+        Vstack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        Vstack.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        menuViewWidthConstraint = Vstack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30)
+        menuViewWidthConstraint?.priority = .defaultLow
+        menuViewWidthConstraint?.isActive = true
     }
     
     // MARK: - setUI
