@@ -11,7 +11,6 @@ class HomeTableViewCell: UITableViewCell {
     
     // MARK: - Prorerties
     
-
     static let homeTableViewCell = "HomeTableViewCell"
     
     private var cellFrame: UIView = {
@@ -26,10 +25,10 @@ class HomeTableViewCell: UITableViewCell {
         return frame
     }()
     
-     let myImageView: UIImageView = {
+     let patternImageView: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFit
-        im.image = UIImage(named: "strategy")
+        im.image = UIImage(named: " ")
         return im
     }()
     
@@ -41,32 +40,31 @@ class HomeTableViewCell: UITableViewCell {
         return like
     }()
     
-    private let myLabel: UILabel = {
+     let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 15)
-        label.text = "Прототип"
+        label.text = " "
         return label
     }()
     var descriptionLabel: UILabel = {
           let description = UILabel()
-          
           description.textColor = .lightGray
           description.textAlignment = .left
           description.font = .systemFont(ofSize: 9)
-          description.text = "Прототип — это порождающий паттерн проектирования, который позволяет копировать объекты, не вдаваясь в подробности их реализации."
+          description.text = " "
           description.numberOfLines = 2
           return description
-      }()
+    }()
     
-    private let viewLabel: UILabel = {
+     let viewLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 9)
         label.textColor = .darkGray
-        label.text = "Просмотренно раз: 0"
+        label.text = " "
         return label
     }()
     
@@ -82,12 +80,19 @@ class HomeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(model: HomeCellModel){
+        descriptionLabel.text = model.description
+        patternImageView.image = UIImage(named: model.image)
+        nameLabel.text = model.name
+        viewLabel.text = "Просмотренно раз: \(model.viewNumber)"
+    }
+    
     func addView(){
         
         contentView.addSubview(cellFrame)
         
-        cellFrame.addSubview(myImageView)
-        cellFrame.addSubview(myLabel)
+        cellFrame.addSubview(patternImageView)
+        cellFrame.addSubview(nameLabel)
         cellFrame.addSubview(viewLabel)
         cellFrame.addSubview(likebutton)
         cellFrame.addSubview(descriptionLabel)
@@ -96,8 +101,8 @@ class HomeTableViewCell: UITableViewCell {
     func setupUI() {
         
         cellFrame.translatesAutoresizingMaskIntoConstraints = false
-        myImageView.translatesAutoresizingMaskIntoConstraints = false
-        myLabel.translatesAutoresizingMaskIntoConstraints = false
+        patternImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         viewLabel.translatesAutoresizingMaskIntoConstraints = false
         likebutton.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -109,20 +114,20 @@ class HomeTableViewCell: UITableViewCell {
         cellFrame.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 8),
         cellFrame.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -8),
         
-        myImageView.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 14),
-        myImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 4),
-        myImageView.heightAnchor.constraint(equalToConstant: 55),
-        myImageView.widthAnchor.constraint(equalToConstant: 70),
+        patternImageView.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 14),
+        patternImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 4),
+        patternImageView.heightAnchor.constraint(equalToConstant: 55),
+        patternImageView.widthAnchor.constraint(equalToConstant: 70),
         
-        myLabel.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 18),
-        myLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor , constant: 6),
+        nameLabel.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 18),
+        nameLabel.leadingAnchor.constraint(equalTo: patternImageView.trailingAnchor , constant: 6),
         
-        descriptionLabel.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 2),
-        descriptionLabel.leadingAnchor.constraint(equalTo: myImageView.trailingAnchor,constant: 8),
+        descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+        descriptionLabel.leadingAnchor.constraint(equalTo: patternImageView.trailingAnchor,constant: 8),
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
         descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
         
-        viewLabel.topAnchor.constraint(equalTo: myImageView.bottomAnchor, constant: 8),
+        viewLabel.topAnchor.constraint(equalTo: patternImageView.bottomAnchor, constant: 8),
         viewLabel.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 12),
         viewLabel.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -100),
         
@@ -137,7 +142,6 @@ class HomeTableViewCell: UITableViewCell {
     @objc func heartButtonPressed() {
         
         if likebutton.tag == 0{
-            print("111")
             likebutton.setImage(UIImage(named:"redHeart"), for: .normal)
             likebutton.tag = 1
         } else  {

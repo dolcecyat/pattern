@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F342C6E30A1009B511D /* MenuView.swift */; };
-		ED7C6F392C73CC40009B511D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F382C73CC40009B511D /* Model.swift */; };
-		ED7C6F3B2C8F0B1C009B511D /* DesignPatternModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3A2C8F0B1C009B511D /* DesignPatternModel.swift */; };
+		ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */; };
 		ED7C6F3D2C8F2A3C009B511D /* PaternData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */; };
+		ED7C6F3F2C95841A009B511D /* HomeCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */; };
 		EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD02C664DAD006E843C /* AppDelegate.swift */; };
 		EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */; };
 		EDF6AADA2C664DB0006E843C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF6AAD92C664DB0006E843C /* Assets.xcassets */; };
@@ -23,9 +23,9 @@
 
 /* Begin PBXFileReference section */
 		ED7C6F342C6E30A1009B511D /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		ED7C6F382C73CC40009B511D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		ED7C6F3A2C8F0B1C009B511D /* DesignPatternModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignPatternModel.swift; sourceTree = "<group>"; };
+		ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternModel.swift; sourceTree = "<group>"; };
 		ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaternData.swift; sourceTree = "<group>"; };
+		ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCellModel.swift; sourceTree = "<group>"; };
 		EDF6AACD2C664DAD006E843C /* taskwithUIView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskwithUIView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF6AAD02C664DAD006E843C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,7 +72,6 @@
 				EDF6AAF62C681FF0006E843C /* View */,
 				EDF6AAF52C681FD8006E843C /* Model */,
 				EDF6AAD02C664DAD006E843C /* AppDelegate.swift */,
-				ED7C6F382C73CC40009B511D /* Model.swift */,
 				EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */,
 				EDF6AAE42C665003006E843C /* HomePresenter.swift */,
 				EDF6AAD92C664DB0006E843C /* Assets.xcassets */,
@@ -94,8 +93,9 @@
 			isa = PBXGroup;
 			children = (
 				EDF6AAF02C678DC2006E843C /* MenuOption.swift */,
-				ED7C6F3A2C8F0B1C009B511D /* DesignPatternModel.swift */,
+				ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */,
 				ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */,
+				ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -183,12 +183,12 @@
 				EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */,
 				EDF6AAF12C678DC2006E843C /* MenuOption.swift in Sources */,
 				ED7C6F3D2C8F2A3C009B511D /* PaternData.swift in Sources */,
+				ED7C6F3F2C95841A009B511D /* HomeCellModel.swift in Sources */,
 				EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */,
 				EDF6AAF32C67A013006E843C /* HomeTableViewCell.swift in Sources */,
 				ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */,
 				EDF6AAE52C665003006E843C /* HomePresenter.swift in Sources */,
-				ED7C6F392C73CC40009B511D /* Model.swift in Sources */,
-				ED7C6F3B2C8F0B1C009B511D /* DesignPatternModel.swift in Sources */,
+				ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
