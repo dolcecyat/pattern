@@ -6,12 +6,18 @@
 
 
 import UIKit
+private enum Constants {
+    static let redHeartImage = "redHeart"
+    static let greyHeartImage = "greyHeart"
+}
 
 class HomeTableViewCell: UITableViewCell {
     
     // MARK: - Prorerties
     
-    static let homeTableViewCell = "HomeTableViewCell"
+    static var identifier: String {
+        return String(describing: self)
+    }
     
     private var cellFrame: UIView = {
         let frame = UIView()
@@ -35,7 +41,7 @@ class HomeTableViewCell: UITableViewCell {
      let likebutton: UIButton = {
         let like = UIButton()
         like.setTitle("", for: .normal)
-        like.setImage(UIImage(named: "greyHeart"), for: .normal)
+         like.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
         like.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
         return like
     }()
@@ -88,7 +94,6 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     func addView(){
-        
         contentView.addSubview(cellFrame)
         
         cellFrame.addSubview(patternImageView)
@@ -99,7 +104,6 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     func setupUI() {
-        
         cellFrame.translatesAutoresizingMaskIntoConstraints = false
         patternImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -140,12 +144,11 @@ class HomeTableViewCell: UITableViewCell {
     // MARK: - Handlers
     
     @objc func heartButtonPressed() {
-        
         if likebutton.tag == 0{
-            likebutton.setImage(UIImage(named:"redHeart"), for: .normal)
+            likebutton.setImage(UIImage(named: Constants.redHeartImage), for: .normal)
             likebutton.tag = 1
         } else  {
-           likebutton.setImage(UIImage(named:"greyHeart"), for: .normal)
+            likebutton.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
        likebutton.tag = 0
         }
     }

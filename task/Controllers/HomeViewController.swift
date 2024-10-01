@@ -6,16 +6,23 @@
 //
 
 import UIKit
- 
+
+private enum Constants {
+    static let deleteSwipeAction = "Удалить"
+    static let plusImage = "plus"
+    static let listBlletImage = "list.bullet"
+    static let designPattensTitleForNavigationBar = "Паттерны проектирования"
+    static let separatorInsertForBottomTableView = 10.0
+    static let durationForShowMenuView = 0.5
+}
 
 protocol HomeDisplayLogic: UIViewController {
     var presenter: HomePresentationProtocol? {get set}
 }
 
 class HomeViewController: UIViewController, HomeDisplayLogic {
-    
     //MARK: - MVP Properties
-
+    
     var presenter: HomePresentationProtocol?
     
     //MARK: - UI properties
@@ -25,37 +32,36 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     var menuViewWidthConstraint: NSLayoutConstraint?
     
     // MARK: - Data Properties
-
-    let structural = PatternsModel.PatternsCategory.Структурные
-    let generative = PatternsModel.PatternsCategory.Порождающие
-    let behavioral = PatternsModel.PatternsCategory.Поведенческие
     
-    var behavioralPatternsArray: [PatternsModel] = []
-    var genegativePatternsArray: [PatternsModel] = []
-    var structuralPatternsArray: [PatternsModel] = []
-    
-    var cellData = PatternData().patternData
     private var shouldExpanding = true
-    let homeTableViewCell = "HomeTableViewCell"
-    private let groupNames = ["Поведенческие","Порождающие","Структурные"]
-
+//    let homeTableViewCell = "HomeTableViewCell"
+    
     // MARK: - Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-  
+    
     required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
     }
-
+    
     //MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+        filterPatterns()
         addViews()
         setupViews()
         makeConstraints()
+    }
+    
+    // MARK: - Setup
+    
+    private func setup() {
+        let assembly = HomeAssembly()
+        assembly.configurate(self)
     }
 }
 
@@ -63,7 +69,6 @@ private extension HomeViewController {
     //MARK: - addViews
     
     private func addViews() {
-        
         view.addSubview(tableView)
         navigationController?.view.addSubview(menuView)
     }
@@ -89,25 +94,28 @@ private extension HomeViewController {
     
     //MARK: - setupViews
     
-    private func setupViews() {
+    private func setupViews(){
         setupNavBar()
         configureHomeTableView()
         menuView.backgroundColor = .darkGray
         menuView.layer.zPosition = 1
-        
     }
+    // MARK: - TableView configuration
     
     private func configureHomeTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: homeTableViewCell)
+        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.allowsMultipleSelection = true
-        tableView.separatorInset.bottom = 10
-        filteredPatterns(group: behavioral)
-        filteredPatterns(group: generative)
-        filteredPatterns(group: structural)
+        tableView.separatorInset.bottom = Constants.separatorInsertForBottomTableView
+    }
+    
+    func filterPatterns () {
+        presenter?.filteredPatterns(group: PatternCategory.structural)
+        presenter?.filteredPatterns(group: PatternCategory.generative)
+        presenter?.filteredPatterns(group: PatternCategory.behavioral)
     }
     
     //MARK: - setupNavBar
@@ -116,10 +124,10 @@ private extension HomeViewController {
         self.navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.barStyle = .black
         
-        navigationItem.title = "Паттерны проектирования"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButtonToggle))
+        navigationItem.title = Constants.designPattensTitleForNavigationBar
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.plusImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButtonToggle))
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.listBlletImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
     }
     
     //MARK: - navigationBar Actions
@@ -135,8 +143,7 @@ private extension HomeViewController {
             menuViewWidthConstraint = menuView.widthAnchor.constraint(equalToConstant: .zero)
             menuViewWidthConstraint?.isActive = true
         }
-        
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: Constants.durationForShowMenuView) {
             self.navigationController?.view.layoutIfNeeded()
         }
         self.shouldExpanding.toggle()
@@ -144,44 +151,19 @@ private extension HomeViewController {
     
     @objc private func addButtonToggle() {
     }
-    // MARK: - Fitering PatternModel Array
-    
-    func filteredPatterns(group: PatternsModel.PatternsCategory ) {
-        let arrayFiltered = cellData.filter { $0.category == group }
-        if group == structural{
-            structuralPatternsArray = arrayFiltered
-        }else if group == generative{
-            genegativePatternsArray = arrayFiltered
-        }else if group == behavioral{
-            behavioralPatternsArray = arrayFiltered
-        }
-    }
 }
-
     // MARK: - UITableViewDelegate,  UITableViewDataSource
 
 extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     
-    private func plusViews(patternInGroup: [PatternsModel],indexPath: IndexPath)-> Int{
-        var views = patternInGroup[indexPath.row].numberOfViews
-        views += 1
-        return views
-    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-  
-        if indexPath.section == 0 {
-            behavioralPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:behavioralPatternsArray,indexPath: indexPath)
-        }else if indexPath.section == 1 {
-            genegativePatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:genegativePatternsArray,indexPath: indexPath)
-        }else if indexPath.section == 2{
-            structuralPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:structuralPatternsArray,indexPath: indexPath)
-        }
+        presenter?.selectPatternForDetails(indexPath: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView,trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { /*[self]*/(action, sourceView, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: Constants.deleteSwipeAction) { /*[self]*/(action, sourceView, completionHandler) in
         }
         tableView.reloadData()
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
@@ -189,7 +171,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        groupNames[section]
+        presenter?.getSectionName(section: section)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -197,39 +179,18 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        groupNames.count
+        presenter?.getNumberOfSections() ?? .zero
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var rowsInSection = 0
-        if section == 0{
-            rowsInSection = behavioralPatternsArray.count
-        }else if section == 1 {
-            rowsInSection = genegativePatternsArray.count
-        }else if section == 2  {
-            rowsInSection = structuralPatternsArray.count
-        }
+        let rowsInSection = presenter?.countCells(section: section) ?? .zero
         return rowsInSection
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: homeTableViewCell, for: indexPath) as? HomeTableViewCell else {return UITableViewCell() }
-        
-        if indexPath.section == 0 {
-            let modelPattern = behavioralPatternsArray[indexPath.row]
-            let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
-            cell.configure(model: modelForCell)
-        } else if indexPath.section == 1 {
-            let modelPattern = genegativePatternsArray[indexPath.row]
-            let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
-            cell.configure(model: modelForCell)
-        } else if indexPath.section == 2 {
-            let modelPattern = structuralPatternsArray[indexPath.row]
-            let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
-            cell.configure(model: modelForCell)
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
+              let model = presenter?.cellInformation(indexPath: indexPath) else {return UITableViewCell() }
+        cell.configure(model: model)
         return cell
     }
 }
-
-

@@ -9,22 +9,26 @@ import Foundation
 import UIKit
 
 private enum Constans {
-    static let oopPrinciples = "Принципы ООП"
+    static let oopPrinciplesLabel = "Принципы ООП"
+    static let designPatternsLabel = "Паттерны проектирования"
+    static let architecturalPatternsLabel = "Архитектурные паттерны"
+    static let SOLIDPrinciplesLabel = "Принципы SOLID"
+    static let arrowRightImage = "arrow.right"
 }
 class MenuView: UIView {
     
     // MARK: - UI Properties
     
     let Vstack = UIStackView()
-    var Hstack1 = UIStackView()
-    var Hstack2 = UIStackView()
-    var Hstack3 = UIStackView()
-    var Hstack4 =  UIStackView()
+    var oopPrinciplesHstack = UIStackView()
+    var designPatternsHstack = UIStackView()
+    var architecturalPatternsHstack = UIStackView()
+    var SOLIDPrinciplesHstack = UIStackView()
     
-    let label1 = "Принципы ООП"
-    let label2 = "Паттерны проектирования"
-    let label3 = "Архитектурные паттерны"
-    let label4 = "Принципы SOLID"
+    let oopPrinciplesLabel = Constans.oopPrinciplesLabel
+    let designPatternsLabel = Constans.designPatternsLabel
+    let architecturalPatternsLabel = Constans.architecturalPatternsLabel
+    let SOLIDPrinciplesLabel = Constans.SOLIDPrinciplesLabel
     var menuViewWidthConstraint: NSLayoutConstraint?
 
     
@@ -45,10 +49,10 @@ class MenuView: UIView {
     
     func addViews() {
         self.addSubview(Vstack)
-        Vstack.addArrangedSubview(Hstack1)
-        Vstack.addArrangedSubview(Hstack2)
-        Vstack.addArrangedSubview(Hstack3)
-        Vstack.addArrangedSubview(Hstack4)
+        Vstack.addArrangedSubview(oopPrinciplesHstack)
+        Vstack.addArrangedSubview(designPatternsHstack)
+        Vstack.addArrangedSubview(architecturalPatternsHstack)
+        Vstack.addArrangedSubview(SOLIDPrinciplesHstack)
     }
     
     // MARK: - Add constraints
@@ -69,16 +73,16 @@ class MenuView: UIView {
         Vstack.axis = .vertical
         Vstack.alignment = .leading
         
-        buildHstack(stack: Hstack1, text: Constans.oopPrinciples)
-        buildHstack(stack: Hstack2, text: label2)
-        buildHstack(stack: Hstack3, text: label3)
-        buildHstack(stack: Hstack4, text: label4)
+        buildHstack(stack: oopPrinciplesHstack, text: Constans.oopPrinciplesLabel)
+        buildHstack(stack: designPatternsHstack, text: Constans.designPatternsLabel)
+        buildHstack(stack: architecturalPatternsHstack, text: Constans.architecturalPatternsLabel)
+        buildHstack(stack: SOLIDPrinciplesHstack, text: Constans.SOLIDPrinciplesLabel)
     }
     
     // MARK: - Building Hstacks
     
     func buildHstack (stack: UIStackView,text: String){
-        let image = UIImageView(image: UIImage(systemName: "arrow.right")!.withTintColor(UIColor(.white), renderingMode: .alwaysOriginal))
+        let image = UIImageView(image: UIImage(systemName: Constans.arrowRightImage)?.withTintColor(UIColor(.white), renderingMode: .alwaysOriginal))
         let label = UILabel()
         label.text = text
         label.textColor = .white

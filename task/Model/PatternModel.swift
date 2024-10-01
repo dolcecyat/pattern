@@ -16,10 +16,10 @@ struct PatternsModel {
     var isFavorite: Bool
     var numberOfViews: Int
     
-    enum PatternsCategory {
-           case Порождающие
-           case Структурные
-           case Поведенческие
+    enum PatternsCategory: String {
+           case Порождающие = "Порождающие"
+           case Структурные = "Структурные"
+           case Поведенческие = "Поведенческие"
           }
 
 }
