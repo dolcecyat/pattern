@@ -16,10 +16,25 @@ struct PatternsModel {
     var isFavorite: Bool
     var numberOfViews: Int
     
-    enum PatternsCategory: String {
-           case Порождающие = "Порождающие"
-           case Структурные = "Структурные"
-           case Поведенческие = "Поведенческие"
-          }
-
+    enum PatternsCategory: CaseIterable {
+        case Поведенческие
+        case Порождающие
+        case Структурные
+        
+        var description: String {
+            switch self {
+            case .Порождающие:
+                return "Порождающие"
+            case .Структурные:
+                return "Структурные"
+            case .Поведенческие:
+                return "Поведенческие"
+            }
+        }
+        
+        var sectionNumber: Int {
+            return PatternsCategory.allCases.firstIndex(of: self) ?? 0
+        }
+        
+    }
 }
