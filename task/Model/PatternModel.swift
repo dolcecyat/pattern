@@ -31,10 +31,9 @@ struct PatternsModel {
                 return "Поведенческие"
             }
         }
-        
+
         var sectionNumber: Int {
             return PatternsCategory.allCases.firstIndex(of: self) ?? 0
         }
-        
     }
 }

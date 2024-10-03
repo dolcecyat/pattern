@@ -34,7 +34,6 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     // MARK: - Data Properties
     
     private var shouldExpanding = true
-//    let homeTableViewCell = "HomeTableViewCell"
     
     // MARK: - Init
     
@@ -113,9 +112,9 @@ private extension HomeViewController {
     }
     
     func filterPatterns () {
-        presenter?.filteredPatterns(group: PatternCategory.structural)
-        presenter?.filteredPatterns(group: PatternCategory.generative)
-        presenter?.filteredPatterns(group: PatternCategory.behavioral)
+        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Структурные)
+        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Порождающие)
+        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Поведенческие)
     }
     
     //MARK: - setupNavBar
@@ -172,10 +171,6 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         presenter?.getSectionName(section: section)
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        30
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
