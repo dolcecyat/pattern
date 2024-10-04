@@ -19,16 +19,12 @@ class MenuView: UIView {
     
     // MARK: - UI Properties
     
-    let Vstack = UIStackView()
+    let menuOptionsVStack = UIStackView()
     var oopPrinciplesHstack = UIStackView()
     var designPatternsHstack = UIStackView()
     var architecturalPatternsHstack = UIStackView()
     var SOLIDPrinciplesHstack = UIStackView()
     
-    let oopPrinciplesLabel = Constans.oopPrinciplesLabel
-    let designPatternsLabel = Constans.designPatternsLabel
-    let architecturalPatternsLabel = Constans.architecturalPatternsLabel
-    let SOLIDPrinciplesLabel = Constans.SOLIDPrinciplesLabel
     var menuViewWidthConstraint: NSLayoutConstraint?
 
     
@@ -48,20 +44,20 @@ class MenuView: UIView {
     // MARK: - Add views
     
     func addViews() {
-        self.addSubview(Vstack)
-        Vstack.addArrangedSubview(oopPrinciplesHstack)
-        Vstack.addArrangedSubview(designPatternsHstack)
-        Vstack.addArrangedSubview(architecturalPatternsHstack)
-        Vstack.addArrangedSubview(SOLIDPrinciplesHstack)
+        self.addSubview(menuOptionsVStack)
+        menuOptionsVStack.addArrangedSubview(oopPrinciplesHstack)
+        menuOptionsVStack.addArrangedSubview(designPatternsHstack)
+        menuOptionsVStack.addArrangedSubview(architecturalPatternsHstack)
+        menuOptionsVStack.addArrangedSubview(SOLIDPrinciplesHstack)
     }
     
     // MARK: - Add constraints
     
     func makeConstraints() {
-        Vstack.translatesAutoresizingMaskIntoConstraints = false
-        Vstack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        Vstack.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        menuViewWidthConstraint = Vstack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30)
+        menuOptionsVStack.translatesAutoresizingMaskIntoConstraints = false
+        menuOptionsVStack.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        menuOptionsVStack.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        menuViewWidthConstraint = menuOptionsVStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 30)
         menuViewWidthConstraint?.priority = .defaultLow
         menuViewWidthConstraint?.isActive = true
     }
@@ -69,9 +65,9 @@ class MenuView: UIView {
     // MARK: - setUI
     
     func setUI() {
-        Vstack.spacing = 30
-        Vstack.axis = .vertical
-        Vstack.alignment = .leading
+        menuOptionsVStack.spacing = 30
+        menuOptionsVStack.axis = .vertical
+        menuOptionsVStack.alignment = .leading
         
         buildHstack(stack: oopPrinciplesHstack, text: Constans.oopPrinciplesLabel)
         buildHstack(stack: designPatternsHstack, text: Constans.designPatternsLabel)

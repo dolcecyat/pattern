@@ -6,6 +6,9 @@
 //
 
 import UIKit
+private enum Constants{
+    static let emptyPatternModel = HomeCellModel(description: "", image: "", name: "", viewNumber: 0, isFavorite: false)
+}
 
 protocol HomePresentationProtocol: AnyObject{
     var viewController: HomeDisplayLogic? {get set}
@@ -16,10 +19,13 @@ protocol HomePresentationProtocol: AnyObject{
     func selectPatternForDetails (indexPath: IndexPath)
     func getSectionName (section: Int) -> String
     func getNumberOfSections () -> Int
+    func deletePattern (indexPath: IndexPath)
+    func openPatternDetails (patternAtIndexPath:IndexPath)
+    func addingPatternToFavorite (IndexPath: IndexPath, isFavorite: Bool)
 }
 
 class HomePresenter: HomePresentationProtocol {
-    
+
     //MARK: - MVP Properties
     
     weak var viewController: HomeDisplayLogic?
@@ -46,7 +52,7 @@ class HomePresenter: HomePresentationProtocol {
         case .Порождающие:
             genegativePatternsArray = arrayFiltered
         case .none:
-            print("Error with filtering of patterns")
+            print(Errors.FilteringPatternsError)
         }
 
     }
@@ -62,7 +68,6 @@ class HomePresenter: HomePresentationProtocol {
     }
     
     func getSectionName (section: Int) -> String {
-    
         return PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == section })?.description ?? ""
     }
 
@@ -77,7 +82,7 @@ class HomePresenter: HomePresentationProtocol {
         case .Порождающие:
             rowsInSection = genegativePatternsArray.count
         case .none:
-            print("Error with counting cells")
+            print(Errors.CountCellsError)
         }
         return rowsInSection
     }
@@ -97,8 +102,8 @@ class HomePresenter: HomePresentationProtocol {
                 let modelPattern = structuralPatternsArray[indexPath.row]
                 let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
               return modelForCell
-            case .none:
-               return HomeCellModel(description: "", image: "", name: "", viewNumber: 0, isFavorite: false)
+          case .none:
+                return Constants.emptyPatternModel
             }
         }
     // MARK: - View number of pattern
@@ -113,7 +118,7 @@ class HomePresenter: HomePresentationProtocol {
         case .Порождающие:
             genegativePatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:genegativePatternsArray,indexPath: indexPath)
         case .none:
-            print("Error with selecting cell")
+            print(Errors.SelectingCellError)
         }
     }
     
@@ -121,5 +126,54 @@ class HomePresenter: HomePresentationProtocol {
         var views = patternInGroup[indexPath.row].numberOfViews
         views += 1
         return views
+    }
+    
+    // MARK: - Deleting Patterns
+    func deletePattern (indexPath: IndexPath){
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
+        switch gategory{
+        case .Поведенческие:
+            behavioralPatternsArray.remove(at: indexPath.row)
+        case .Структурные:
+            structuralPatternsArray.remove(at: indexPath.row)
+        case .Порождающие:
+            genegativePatternsArray.remove(at: indexPath.row)
+        case .none:
+            print(Errors.DeletingCellError)
+        }
+    }
+    
+    // MARK: - Opening details about pattern
+    func openPatternDetails (patternAtIndexPath: IndexPath){
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == patternAtIndexPath.section })
+        switch gategory {
+        case .Поведенческие:
+            print(behavioralPatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternName: behavioralPatternsArray[patternAtIndexPath.row].patternName)
+        case .Структурные:
+            print(structuralPatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternName: structuralPatternsArray[patternAtIndexPath.row].patternName)
+        case .Порождающие:
+            print(genegativePatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternName: genegativePatternsArray[patternAtIndexPath.row].patternName)
+        case .none:
+            print(Errors.OpeningDetailError)
+        }
+    }
+    
+    // MARK: - Adding to Favorite
+    func addingPatternToFavorite (IndexPath: IndexPath, isFavorite: Bool) {
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == IndexPath.section })
+        switch gategory {
+        case .Поведенческие:
+            behavioralPatternsArray[IndexPath.row].isFavorite.toggle()
+        case .Структурные:
+            structuralPatternsArray[IndexPath.row].isFavorite.toggle()
+        case .Порождающие:
+            genegativePatternsArray[IndexPath.row].isFavorite.toggle()
+        case .none:
+            print(Errors.ChangingFavoriteError)
+        }
+        viewController?.updateData()
     }
 }

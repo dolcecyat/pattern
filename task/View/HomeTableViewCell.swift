@@ -41,7 +41,7 @@ class HomeTableViewCell: UITableViewCell {
      let likebutton: UIButton = {
         let like = UIButton()
         like.setTitle("", for: .normal)
-         like.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
+        like.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
         like.addTarget(self, action: #selector(heartButtonPressed), for: .touchUpInside)
         return like
     }()
@@ -54,7 +54,8 @@ class HomeTableViewCell: UITableViewCell {
         label.text = " "
         return label
     }()
-    var descriptionLabel: UILabel = {
+    
+     var descriptionLabel: UILabel = {
           let description = UILabel()
           description.textColor = .lightGray
           description.textAlignment = .left
@@ -74,6 +75,18 @@ class HomeTableViewCell: UITableViewCell {
         return label
     }()
     
+    var isFavorite: Bool = false {
+        didSet{
+            if isFavorite == true {
+                likebutton.setImage(UIImage(named: Constants.redHeartImage), for: .normal)
+            }else {
+                likebutton.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
+            }
+        }
+    }
+    
+    var clousure: ((Bool)->())?
+    
     // MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -91,6 +104,7 @@ class HomeTableViewCell: UITableViewCell {
         patternImageView.image = UIImage(named: model.image)
         nameLabel.text = model.name
         viewLabel.text = "Просмотренно раз: \(model.viewNumber)"
+        isFavorite = model.isFavorite
     }
     
     func addView(){
@@ -144,12 +158,6 @@ class HomeTableViewCell: UITableViewCell {
     // MARK: - Handlers
     
     @objc func heartButtonPressed() {
-        if likebutton.tag == 0{
-            likebutton.setImage(UIImage(named: Constants.redHeartImage), for: .normal)
-            likebutton.tag = 1
-        } else  {
-            likebutton.setImage(UIImage(named: Constants.greyHeartImage), for: .normal)
-       likebutton.tag = 0
-        }
+        clousure?(isFavorite)
     }
 }

@@ -18,6 +18,7 @@ private enum Constants {
 
 protocol HomeDisplayLogic: UIViewController {
     var presenter: HomePresentationProtocol? {get set}
+    func updateData()
 }
 
 class HomeViewController: UIViewController, HomeDisplayLogic {
@@ -124,7 +125,7 @@ private extension HomeViewController {
         navigationController?.navigationBar.barStyle = .black
         
         navigationItem.title = Constants.designPattensTitleForNavigationBar
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.plusImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButtonToggle))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.plusImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButton))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.listBlletImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
     }
@@ -148,23 +149,29 @@ private extension HomeViewController {
         self.shouldExpanding.toggle()
     }
     
-    @objc private func addButtonToggle() {
+    @objc private func addButton() {
     }
 }
     // MARK: - UITableViewDelegate,  UITableViewDataSource
 
 extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     
+    func updateData() {
+        tableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.selectPatternForDetails(indexPath: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
+        presenter?.openPatternDetails(patternAtIndexPath: indexPath)
         tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView,trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?{
-        let deleteAction = UIContextualAction(style: .destructive, title: Constants.deleteSwipeAction) { /*[self]*/(action, sourceView, completionHandler) in
+        let deleteAction = UIContextualAction(style: .destructive, title: Constants.deleteSwipeAction) { [self] (action, sourceView, completionHandler) in
+            presenter?.deletePattern(indexPath: indexPath)
+            tableView.reloadData()
         }
-        tableView.reloadData()
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
     }
@@ -186,6 +193,10 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
               let model = presenter?.cellInformation(indexPath: indexPath) else {return UITableViewCell() }
         cell.configure(model: model)
+        cell.clousure = { [weak self] isFavorite in
+            guard let self = self else {return}
+            self.presenter?.addingPatternToFavorite(IndexPath: indexPath, isFavorite: isFavorite)
+        }
         return cell
     }
 }
