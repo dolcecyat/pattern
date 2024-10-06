@@ -13,4 +13,5 @@ struct HomeCellModel {
     var name: String
     var viewNumber: Int
     var isFavorite: Bool
+    var category: PatternsModel.PatternsCategory
 }

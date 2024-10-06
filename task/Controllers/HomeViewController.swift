@@ -150,6 +150,8 @@ private extension HomeViewController {
     }
     
     @objc private func addButton() {
+        presenter?.openAddingVC()
+        tableView.reloadData()
     }
 }
     // MARK: - UITableViewDelegate,  UITableViewDataSource
@@ -161,9 +163,11 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        shouldExpanding = false
+        handleMenuToggle()
         presenter?.selectPatternForDetails(indexPath: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter?.openPatternDetails(patternAtIndexPath: indexPath)
+        presenter?.openPatternDetails(indexPath: indexPath)
         tableView.reloadData()
     }
     
@@ -195,7 +199,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
         cell.configure(model: model)
         cell.clousure = { [weak self] isFavorite in
             guard let self = self else {return}
-            self.presenter?.addingPatternToFavorite(IndexPath: indexPath, isFavorite: isFavorite)
+            self.presenter?.addingPatternToFavorite(indexPath: indexPath, isFavorite: isFavorite)
         }
         return cell
     }

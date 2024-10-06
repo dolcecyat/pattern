@@ -9,16 +9,22 @@ import UIKit
 
 protocol HomeRouterProtocol: AnyObject {
     var presenter: HomePresentationProtocol? {get set}
-    func showDetailVC(patternName: String)
+    func showDetailVC(patternModel: PatternsModel)
+    func showAddingVC()
 }
 
 class HomeRouter: HomeRouterProtocol {
     
     weak var presenter: HomePresentationProtocol?
 
-    func showDetailVC(patternName: String) {
-        let newVC = DetailPatternViewController()
-        presenter?.viewController?.navigationController?.pushViewController(newVC, animated: true)
+    func showDetailVC(patternModel: PatternsModel) {
+        let VCToOpen = DetailPatternViewController()
+        VCToOpen.model = patternModel
+        presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
     }
 
+    func showAddingVC(){
+        let VCToOpen = AddingViewController()
+        presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
+    }
 }

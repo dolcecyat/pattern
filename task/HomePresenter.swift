@@ -7,7 +7,7 @@
 
 import UIKit
 private enum Constants{
-    static let emptyPatternModel = HomeCellModel(description: "", image: "", name: "", viewNumber: 0, isFavorite: false)
+    static let emptyPatternModel = HomeCellModel(description: "", image: "", name: "", viewNumber: 0, isFavorite: false, category: .Поведенческие)
 }
 
 protocol HomePresentationProtocol: AnyObject{
@@ -20,8 +20,9 @@ protocol HomePresentationProtocol: AnyObject{
     func getSectionName (section: Int) -> String
     func getNumberOfSections () -> Int
     func deletePattern (indexPath: IndexPath)
-    func openPatternDetails (patternAtIndexPath:IndexPath)
-    func addingPatternToFavorite (IndexPath: IndexPath, isFavorite: Bool)
+    func openPatternDetails (indexPath:IndexPath)
+    func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool)
+    func openAddingVC()
 }
 
 class HomePresenter: HomePresentationProtocol {
@@ -89,18 +90,19 @@ class HomePresenter: HomePresentationProtocol {
     
     func  cellInformation (indexPath: IndexPath) -> HomeCellModel {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
+        let categoryName = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section }) ?? .Поведенческие
             switch gategory {
             case .Поведенческие:
                 let modelPattern = behavioralPatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
+                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite, category: categoryName)
               return modelForCell
             case .Порождающие:
                 let modelPattern = genegativePatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
+                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite,category: categoryName)
               return modelForCell
             case .Структурные:
                 let modelPattern = structuralPatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite)
+                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite,category: categoryName)
               return modelForCell
           case .none:
                 return Constants.emptyPatternModel
@@ -129,6 +131,7 @@ class HomePresenter: HomePresentationProtocol {
     }
     
     // MARK: - Deleting Patterns
+    
     func deletePattern (indexPath: IndexPath){
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
@@ -144,36 +147,39 @@ class HomePresenter: HomePresentationProtocol {
     }
     
     // MARK: - Opening details about pattern
-    func openPatternDetails (patternAtIndexPath: IndexPath){
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == patternAtIndexPath.section })
+    
+    func openPatternDetails (indexPath: IndexPath){
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
-            print(behavioralPatternsArray[patternAtIndexPath.row].patternName)
-            router?.showDetailVC(patternName: behavioralPatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternModel: behavioralPatternsArray[indexPath.row])
         case .Структурные:
-            print(structuralPatternsArray[patternAtIndexPath.row].patternName)
-            router?.showDetailVC(patternName: structuralPatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternModel: structuralPatternsArray[indexPath.row])
         case .Порождающие:
-            print(genegativePatternsArray[patternAtIndexPath.row].patternName)
-            router?.showDetailVC(patternName: genegativePatternsArray[patternAtIndexPath.row].patternName)
+            router?.showDetailVC(patternModel: genegativePatternsArray[indexPath.row])
         case .none:
             print(Errors.OpeningDetailError)
         }
     }
     
     // MARK: - Adding to Favorite
-    func addingPatternToFavorite (IndexPath: IndexPath, isFavorite: Bool) {
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == IndexPath.section })
+    
+    func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool) {
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
-            behavioralPatternsArray[IndexPath.row].isFavorite.toggle()
+            behavioralPatternsArray[indexPath.row].isFavorite.toggle()
         case .Структурные:
-            structuralPatternsArray[IndexPath.row].isFavorite.toggle()
+            structuralPatternsArray[indexPath.row].isFavorite.toggle()
         case .Порождающие:
-            genegativePatternsArray[IndexPath.row].isFavorite.toggle()
+            genegativePatternsArray[indexPath.row].isFavorite.toggle()
         case .none:
             print(Errors.ChangingFavoriteError)
         }
         viewController?.updateData()
+    }
+    
+    func openAddingVC() {
+        router?.showAddingVC()
     }
 }
