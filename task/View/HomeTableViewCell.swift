@@ -31,7 +31,7 @@ class HomeTableViewCell: UITableViewCell {
         return frame
     }()
     
-     let patternImageView: UIImageView = {
+     var patternImageView: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFit
         im.image = UIImage(named: " ")
@@ -101,7 +101,7 @@ class HomeTableViewCell: UITableViewCell {
     
     func configure(model: HomeCellModel){
         descriptionLabel.text = model.description
-        patternImageView.image = UIImage(named: model.image)
+        patternImageView.image = model.image
         nameLabel.text = model.name
         viewLabel.text = "Просмотренно раз: \(model.viewNumber)"
         isFavorite = model.isFavorite
@@ -133,7 +133,7 @@ class HomeTableViewCell: UITableViewCell {
         cellFrame.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -8),
         
         patternImageView.topAnchor.constraint(equalTo: cellFrame.topAnchor, constant: 14),
-        patternImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 4),
+        patternImageView.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 8),
         patternImageView.heightAnchor.constraint(equalToConstant: 55),
         patternImageView.widthAnchor.constraint(equalToConstant: 70),
         
@@ -145,9 +145,9 @@ class HomeTableViewCell: UITableViewCell {
         descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -40),
         descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
         
-        viewLabel.topAnchor.constraint(equalTo: patternImageView.bottomAnchor, constant: 8),
+        viewLabel.bottomAnchor.constraint(equalTo: cellFrame.bottomAnchor, constant: -8),
         viewLabel.leadingAnchor.constraint(equalTo: cellFrame.leadingAnchor, constant: 12),
-        viewLabel.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -100),
+        viewLabel.topAnchor.constraint(equalTo: patternImageView.bottomAnchor, constant: 6),
         
         likebutton.bottomAnchor.constraint(equalTo: cellFrame.bottomAnchor, constant: -4),
         likebutton.trailingAnchor.constraint(equalTo: cellFrame.trailingAnchor, constant: -6),

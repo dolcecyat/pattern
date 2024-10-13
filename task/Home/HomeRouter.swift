@@ -11,11 +11,12 @@ protocol HomeRouterProtocol: AnyObject {
     var presenter: HomePresentationProtocol? {get set}
     func showDetailVC(patternModel: PatternsModel)
     func showAddingVC()
+    func showHomeVCAfterAddingNewPattern(model: PatternsModel)
 }
 
 class HomeRouter: HomeRouterProtocol {
     
-    weak var presenter: HomePresentationProtocol?
+     weak var presenter: HomePresentationProtocol?
 
     func showDetailVC(patternModel: PatternsModel) {
         let VCToOpen = DetailPatternViewController()
@@ -25,6 +26,13 @@ class HomeRouter: HomeRouterProtocol {
 
     func showAddingVC(){
         let VCToOpen = AddingViewController()
+        VCToOpen.closure = { value in
+            self.presenter?.getNewpattern(modelOfNewPattern: value)
+            print(1)
+        }
         presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
+    }
+    func showHomeVCAfterAddingNewPattern(model: PatternsModel){
+        presenter?.viewController?.navigationController?.popViewController(animated: true)
     }
 }

@@ -6,11 +6,11 @@
 //
 
 import UIKit
-private enum Constants{
-    static let emptyPatternModel = HomeCellModel(description: "", image: "", name: "", viewNumber: 0, isFavorite: false, category: .Поведенческие)
+private enum Constants {
+    static let emptyPatternModel = HomeCellModel(description: "", image: UIImage(resource: .abstractFactory), name: "", viewNumber: 0, isFavorite: false, category: .Поведенческие)
 }
 
-protocol HomePresentationProtocol: AnyObject{
+protocol HomePresentationProtocol: AnyObject {
     var viewController: HomeDisplayLogic? {get set}
     var router: HomeRouterProtocol? {get set}
     func cellInformation (indexPath: IndexPath) -> HomeCellModel
@@ -23,6 +23,7 @@ protocol HomePresentationProtocol: AnyObject{
     func openPatternDetails (indexPath:IndexPath)
     func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool)
     func openAddingVC()
+    func getNewpattern(modelOfNewPattern: PatternsModel)
 }
 
 class HomePresenter: HomePresentationProtocol {
@@ -55,7 +56,6 @@ class HomePresenter: HomePresentationProtocol {
         case .none:
             print(Errors.FilteringPatternsError)
         }
-
     }
     
     // MARK: - Data for HomeTableView
@@ -108,6 +108,7 @@ class HomePresenter: HomePresentationProtocol {
                 return Constants.emptyPatternModel
             }
         }
+    
     // MARK: - View number of pattern
 
     func selectPatternForDetails (indexPath: IndexPath) {
@@ -181,5 +182,26 @@ class HomePresenter: HomePresentationProtocol {
     
     func openAddingVC() {
         router?.showAddingVC()
+    }
+    
+    // MARK: - AddingNewPattern
+    
+    func getNewpattern(modelOfNewPattern: PatternsModel){
+      
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == modelOfNewPattern.category.description })
+        switch gategory{
+        case .Поведенческие:
+            behavioralPatternsArray.append(modelOfNewPattern)
+            viewController?.updateData()
+        case .Структурные:
+            structuralPatternsArray.append(modelOfNewPattern)
+            viewController?.updateData()
+        case .Порождающие:
+            genegativePatternsArray.append(modelOfNewPattern)
+            viewController?.updateData()
+        case .none:
+            print(Errors.FilteringPatternsError)
+        }
+        
     }
 }

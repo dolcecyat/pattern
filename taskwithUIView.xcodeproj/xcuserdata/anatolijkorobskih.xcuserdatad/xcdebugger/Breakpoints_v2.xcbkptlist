@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "0068A6C0-ADD6-4EBD-AC95-AD998762D1DF"
-            shouldBeEnabled = "No"
+            uuid = "24EE2698-580E-4208-B206-AA003F5E92C6"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "task/Controllers/DetailPatternViewController.swift"
+            filePath = "task/HomeRouter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "setup()"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "showAddingVC()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FCA3D67F-6B6C-4727-B2D2-F891A5574378"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Adding/AddingViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "addButtonPressed()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -61,7 +61,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     
     private func setup() {
         let assembly = HomeAssembly()
-        assembly.configurate(self)
+        assembly.configurateOne(self)
     }
 }
 

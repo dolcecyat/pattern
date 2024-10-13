@@ -16,6 +16,8 @@
 		EDDAF3932CAE91290073DBFC /* DetailPatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */; };
 		EDDAF3952CAFF6D50073DBFC /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3942CAFF6D50073DBFC /* Errors.swift */; };
 		EDDAF3992CB28B430073DBFC /* AddingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3982CB28B430073DBFC /* AddingViewController.swift */; };
+		EDDAF39B2CB6B0010073DBFC /* AddingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */; };
+		EDDAF39D2CB6B02F0073DBFC /* AddingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */; };
 		EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD02C664DAD006E843C /* AppDelegate.swift */; };
 		EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */; };
 		EDF6AADA2C664DB0006E843C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF6AAD92C664DB0006E843C /* Assets.xcassets */; };
@@ -35,6 +37,8 @@
 		EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPatternViewController.swift; sourceTree = "<group>"; };
 		EDDAF3942CAFF6D50073DBFC /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		EDDAF3982CB28B430073DBFC /* AddingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingViewController.swift; sourceTree = "<group>"; };
+		EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingPresenter.swift; sourceTree = "<group>"; };
+		EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingRouter.swift; sourceTree = "<group>"; };
 		EDF6AACD2C664DAD006E843C /* taskwithUIView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskwithUIView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF6AAD02C664DAD006E843C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,10 +61,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EDDAF39E2CB6B0420073DBFC /* Adding */ = {
+			isa = PBXGroup;
+			children = (
+				EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */,
+				EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */,
+			);
+			path = Adding;
+			sourceTree = "<group>";
+		};
+		EDDAF39F2CB94AA80073DBFC /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				EDF6AAE42C665003006E843C /* HomePresenter.swift */,
+				ED7C6F442CA2F218009B511D /* HomeRouter.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		EDF6AAC42C664DAD006E843C = {
 			isa = PBXGroup;
 			children = (
-				EDDAF3982CB28B430073DBFC /* AddingViewController.swift */,
 				EDDAF3942CAFF6D50073DBFC /* Errors.swift */,
 				EDF6AACF2C664DAD006E843C /* task */,
 				EDF6AACE2C664DAD006E843C /* Products */,
@@ -81,11 +102,11 @@
 				EDF6AAF42C681FB7006E843C /* Controllers */,
 				EDF6AAF62C681FF0006E843C /* View */,
 				EDF6AAF52C681FD8006E843C /* Model */,
-				EDF6AAE42C665003006E843C /* HomePresenter.swift */,
+				EDDAF39E2CB6B0420073DBFC /* Adding */,
+				EDDAF39F2CB94AA80073DBFC /* Home */,
+				ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */,
 				EDF6AAD02C664DAD006E843C /* AppDelegate.swift */,
 				EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */,
-				ED7C6F442CA2F218009B511D /* HomeRouter.swift */,
-				ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */,
 				EDF6AAD92C664DB0006E843C /* Assets.xcassets */,
 				EDF6AADB2C664DB0006E843C /* LaunchScreen.storyboard */,
 				EDF6AADE2C664DB0006E843C /* Info.plist */,
@@ -96,6 +117,7 @@
 		EDF6AAF42C681FB7006E843C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				EDDAF3982CB28B430073DBFC /* AddingViewController.swift */,
 				EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */,
 				EDF6AAE62C66502F006E843C /* HomeViewController.swift */,
 			);
@@ -196,12 +218,14 @@
 				ED7C6F452CA2F218009B511D /* HomeRouter.swift in Sources */,
 				EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */,
 				ED7C6F432CA2F20A009B511D /* HomeAssembly.swift in Sources */,
+				EDDAF39D2CB6B02F0073DBFC /* AddingRouter.swift in Sources */,
 				EDDAF3932CAE91290073DBFC /* DetailPatternViewController.swift in Sources */,
 				ED7C6F3D2C8F2A3C009B511D /* PaternData.swift in Sources */,
 				ED7C6F3F2C95841A009B511D /* HomeCellModel.swift in Sources */,
 				EDDAF3952CAFF6D50073DBFC /* Errors.swift in Sources */,
 				EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */,
 				EDF6AAF32C67A013006E843C /* HomeTableViewCell.swift in Sources */,
+				EDDAF39B2CB6B0010073DBFC /* AddingPresenter.swift in Sources */,
 				ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */,
 				EDF6AAE52C665003006E843C /* HomePresenter.swift in Sources */,
 				ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */,

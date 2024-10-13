@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 
 struct PatternsModel {
-    let patternImage: String
-    let patternName: String
-    let patternDescription: String
-    let category: PatternsCategory
+    var patternImage: UIImage
+    var patternName: String
+    var patternDescription: String
+    var category: PatternsCategory
     var isFavorite: Bool
     var numberOfViews: Int
     

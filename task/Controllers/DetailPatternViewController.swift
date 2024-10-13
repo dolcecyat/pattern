@@ -12,6 +12,8 @@ private enum Constants {
     static let redHeartImage = "redHeart"
     static let greyHeartImage = "greyHeart"
     static let groupString = "Группа:\n"
+    static let editBarButtonImageName = "rectangle.and.pencil.and.ellipsis.rtl"
+    static let defaultImage = UIImage(named: "abstract-factory")
 }
 
 protocol DetailPatternDisplayLogic: UIViewController {
@@ -23,15 +25,15 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     
     
     //MARK: - Data Properties
-    var model: PatternsModel = PatternsModel( patternImage: "",
+    var model: PatternsModel = PatternsModel( patternImage: UIImage(resource: .abstractFactory),
                                               patternName: "",
                                               patternDescription: "",
                                               category: PatternsModel.PatternsCategory.Поведенческие,
                                               isFavorite: false,
                                               numberOfViews: 0)
-
+    
     //MARK: - UI properties
-
+    
     let patternImage = UIImageView()
     let favoriteImage = UIImageView()
     let patternDescriptionLabel = UILabel()
@@ -42,20 +44,12 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
     }
-  
+    
     required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
-        setup()
-        
     }
     
-    // MARK: - Setup
-    
-    private func setup() {
-    }
-  
     //MARK: - View lifecycle
     
     override func viewDidLoad(){
@@ -65,12 +59,11 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
         setupViews()
         setupAction()
     }
-    
-    //MARK: - objc method
 }
+    //MARK: - objc method
 
 private extension DetailPatternViewController {
-    
+
     //MARK: - addViews
     
     func addViews() {
@@ -117,8 +110,9 @@ private extension DetailPatternViewController {
     
     func setupViews() {
         view.backgroundColor = .systemBackground
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         
-        patternImage.image = UIImage(named: model.patternImage)
+        patternImage.image = model.patternImage
         patternImage.contentMode = .scaleAspectFit
         patternImage.backgroundColor = .white
         patternImage.layer.cornerRadius = 10
@@ -146,7 +140,9 @@ private extension DetailPatternViewController {
     }
     
     //MARK: - setupAction
-    
+    @objc func edit() {
+        print("EDITING")
+    }
     func setupAction() {
         
     }

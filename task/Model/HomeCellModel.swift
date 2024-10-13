@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 struct HomeCellModel {
     var description: String
-    var image: String
+    var image: UIImage
     var name: String
     var viewNumber: Int
     var isFavorite: Bool

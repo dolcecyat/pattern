@@ -14,6 +14,7 @@ enum Errors {
     case DeletingCellError
     case OpeningDetailError
     case ChangingFavoriteError
+    case ChangingPickerCaseForAddingModel
     
     
     var description: String {
@@ -31,6 +32,8 @@ enum Errors {
             return "Error with opening details"
         case .ChangingFavoriteError:
             return "Error with changing isFavorite"
+        case .ChangingPickerCaseForAddingModel:
+            return "Error with changing picker case for adding category in model"
         }
     }
 }
