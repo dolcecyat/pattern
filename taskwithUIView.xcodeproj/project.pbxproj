@@ -18,6 +18,8 @@
 		EDDAF3992CB28B430073DBFC /* AddingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3982CB28B430073DBFC /* AddingViewController.swift */; };
 		EDDAF39B2CB6B0010073DBFC /* AddingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */; };
 		EDDAF39D2CB6B02F0073DBFC /* AddingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */; };
+		EDDAF3A12CBD054B0073DBFC /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A02CBD054B0073DBFC /* DetailPresenter.swift */; };
+		EDDAF3A32CBD05590073DBFC /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */; };
 		EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD02C664DAD006E843C /* AppDelegate.swift */; };
 		EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */; };
 		EDF6AADA2C664DB0006E843C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF6AAD92C664DB0006E843C /* Assets.xcassets */; };
@@ -39,6 +41,8 @@
 		EDDAF3982CB28B430073DBFC /* AddingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingViewController.swift; sourceTree = "<group>"; };
 		EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingPresenter.swift; sourceTree = "<group>"; };
 		EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingRouter.swift; sourceTree = "<group>"; };
+		EDDAF3A02CBD054B0073DBFC /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
 		EDF6AACD2C664DAD006E843C /* taskwithUIView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskwithUIView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF6AAD02C664DAD006E843C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +83,15 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		EDDAF3A42CBD057A0073DBFC /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				EDDAF3A02CBD054B0073DBFC /* DetailPresenter.swift */,
+				EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		EDF6AAC42C664DAD006E843C = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +117,7 @@
 				EDF6AAF52C681FD8006E843C /* Model */,
 				EDDAF39E2CB6B0420073DBFC /* Adding */,
 				EDDAF39F2CB94AA80073DBFC /* Home */,
+				EDDAF3A42CBD057A0073DBFC /* Detail */,
 				ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */,
 				EDF6AAD02C664DAD006E843C /* AppDelegate.swift */,
 				EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */,
@@ -117,9 +131,9 @@
 		EDF6AAF42C681FB7006E843C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				EDF6AAE62C66502F006E843C /* HomeViewController.swift */,
 				EDDAF3982CB28B430073DBFC /* AddingViewController.swift */,
 				EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */,
-				EDF6AAE62C66502F006E843C /* HomeViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -228,7 +242,9 @@
 				EDDAF39B2CB6B0010073DBFC /* AddingPresenter.swift in Sources */,
 				ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */,
 				EDF6AAE52C665003006E843C /* HomePresenter.swift in Sources */,
+				EDDAF3A32CBD05590073DBFC /* DetailRouter.swift in Sources */,
 				ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */,
+				EDDAF3A12CBD054B0073DBFC /* DetailPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

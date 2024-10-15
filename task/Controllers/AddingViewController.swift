@@ -39,6 +39,7 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     private let addButton = UIButton()
     private let patternImagePicker = UIButton()
     private var pickedPatternImage = UIImage()
+    
     var closure: ((PatternsModel)->())?
     
     var model = PatternsModel(patternImage: UIImage(resource: .abstractFactory), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: .zero)
@@ -59,7 +60,7 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     
     private func setup() {
         let assembly = HomeAssembly()
-        assembly.configurateSecondVC(self)
+        assembly.configurateAddingVC(self)
         
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
@@ -120,8 +121,7 @@ private extension AddingViewController {
             
             patternNameTextField.topAnchor.constraint(equalTo: addNameLabel.bottomAnchor,constant: 10),
             patternNameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-//            patternNameTextField.heightAnchor.constraint(equalToConstant: 40),
+            patternNameTextField.heightAnchor.constraint(equalToConstant: 40),
             patternNameTextField.widthAnchor.constraint(equalToConstant: 350),
             
             descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -147,7 +147,6 @@ private extension AddingViewController {
     //MARK: - setupViews
     
     func setupViews() {
-        
         addNameLabel.text = Constants.addNameLabel
         addNameLabel.textAlignment = .center
         addNameLabel.font = .systemFont(ofSize: 22)
@@ -209,7 +208,6 @@ private extension AddingViewController {
         model.patternDescription = descriptionTextView.text ?? ""
         model.patternImage = patternImagePicker.imageView?.image ??  UIImage()
         
-
         presenter?.addButtonPressed()
         closure?(model)
     }
@@ -268,6 +266,7 @@ extension AddingViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - UITextView
 extension AddingViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -297,7 +296,6 @@ extension AddingViewController: UIImagePickerControllerDelegate,UINavigationCont
     func handleImage(info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             self.pickedPatternImage = image
-            
             patternImagePicker.setImage( image, for: .normal)
         }
     }

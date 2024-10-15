@@ -24,6 +24,7 @@ protocol HomePresentationProtocol: AnyObject {
     func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool)
     func openAddingVC()
     func getNewpattern(modelOfNewPattern: PatternsModel)
+    func editPattertnAt(pattern: PatternsModel)
 }
 
 class HomePresenter: HomePresentationProtocol {
@@ -37,6 +38,7 @@ class HomePresenter: HomePresentationProtocol {
     
     var cellData = PatternData().patternData
     
+    var currentOpenedDetailPatternAtIndexPath: IndexPath = [0,0]
     var behavioralPatternsArray: [PatternsModel] = []
     var genegativePatternsArray: [PatternsModel] = []
     var structuralPatternsArray: [PatternsModel] = []
@@ -79,7 +81,7 @@ class HomePresenter: HomePresentationProtocol {
         case .Поведенческие:
             rowsInSection = behavioralPatternsArray.count
         case .Структурные:
-            rowsInSection = genegativePatternsArray.count
+            rowsInSection = structuralPatternsArray.count
         case .Порождающие:
             rowsInSection = genegativePatternsArray.count
         case .none:
@@ -138,10 +140,13 @@ class HomePresenter: HomePresentationProtocol {
         switch gategory{
         case .Поведенческие:
             behavioralPatternsArray.remove(at: indexPath.row)
+            viewController?.updateData()
         case .Структурные:
             structuralPatternsArray.remove(at: indexPath.row)
+            viewController?.updateData()
         case .Порождающие:
             genegativePatternsArray.remove(at: indexPath.row)
+            viewController?.updateData()
         case .none:
             print(Errors.DeletingCellError)
         }
@@ -150,6 +155,7 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - Opening details about pattern
     
     func openPatternDetails (indexPath: IndexPath){
+        currentOpenedDetailPatternAtIndexPath = indexPath
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
@@ -187,7 +193,6 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - AddingNewPattern
     
     func getNewpattern(modelOfNewPattern: PatternsModel){
-      
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == modelOfNewPattern.category.description })
         switch gategory{
         case .Поведенческие:
@@ -202,6 +207,24 @@ class HomePresenter: HomePresentationProtocol {
         case .none:
             print(Errors.FilteringPatternsError)
         }
-        
+    }
+    
+    // MARK: - Editing Pattern
+    func editPattertnAt(pattern: PatternsModel) {
+        deletePattern(indexPath: currentOpenedDetailPatternAtIndexPath)
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == pattern.category.description })
+        switch gategory{
+        case .Поведенческие:
+            behavioralPatternsArray.insert(pattern, at: 0)
+            viewController?.updateData()
+        case .Структурные:
+            structuralPatternsArray.insert(pattern, at: 0)
+            viewController?.updateData()
+        case .Порождающие:
+            genegativePatternsArray.insert(pattern, at: 0)
+            viewController?.updateData()
+        case .none:
+            print(Errors.FilteringPatternsError)
+        }
     }
 }

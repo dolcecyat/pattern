@@ -7,32 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "24EE2698-580E-4208-B206-AA003F5E92C6"
-            shouldBeEnabled = "Yes"
+            uuid = "D16B12B9-2BE0-41B6-A03F-B4E58E209F8F"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "task/HomeRouter.swift"
+            filePath = "task/Controllers/DetailPatternViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "showAddingVC()"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "pickerView(_:didSelectRow:inComponent:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FCA3D67F-6B6C-4727-B2D2-F891A5574378"
+            uuid = "70F29E3B-E90D-4D8B-9E13-0FF26F2A845D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Adding/AddingViewController.swift"
+            filePath = "task/Controllers/DetailPatternViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
-            landmarkName = "addButtonPressed()"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "edit()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6B88F5B2-8C12-4D16-A024-1B3964641135"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "task/Controllers/DetailPatternViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "endEditing()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
