@@ -51,7 +51,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     private var patternTypeLabel = UILabel()
     private let groupPicker = UIPickerView()
     
-    // MARK: - Init
+    // MARK: - Init/deinit
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -93,6 +93,10 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
         makeConstraints()
         setupViews()
         keyboardSetUp()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        closure?(model)
     }
 }
 private extension DetailPatternViewController {
@@ -153,7 +157,9 @@ private extension DetailPatternViewController {
     
     func setupViews() {
         view.backgroundColor = .systemBackground
-        self.navigationItem.rightBarButtonItem = editingMode == true ? UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit)) : UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
+        self.navigationItem.rightBarButtonItem = editingMode == true ?
+                                                                       UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit)) :
+                                                                       UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         
         patternImage.image = model.patternImage
         patternImage.contentMode = .scaleAspectFit
@@ -164,7 +170,7 @@ private extension DetailPatternViewController {
         patternImage.layer.shadowOffset = CGSize(width: 1, height: 1)
         patternImage.layer.shadowRadius = 5
 
-        patternDescriptionTextView.text = capitalizingFirstLetter(model.patternDescription)
+        patternDescriptionTextView.text = presenter?.capitalizingFirstLetter(model.patternDescription)
         patternDescriptionTextView.textColor = .black
         patternDescriptionTextView.font = UIFont.systemFont(ofSize: 20)
         patternDescriptionTextView.layer.borderWidth = 1
@@ -199,7 +205,7 @@ private extension DetailPatternViewController {
         
         groupPicker.isHidden = true
         
-        favoriteImage.image = model.isFavorite ? UIImage(named: Constants.redHeartImage) : nil
+        favoriteImage.image = model.isFavorite ? UIImage(named: Constants.redHeartImage) : UIImage()
     }
     
     //MARK: - Editing Button Pressed
@@ -208,6 +214,8 @@ private extension DetailPatternViewController {
         print("EDITING")
         editingMode.toggle()
         print(editingMode)
+        model.category = .Поведенческие
+        patternTypeLabel.text = Constants.groupString + PatternsModel.PatternsCategory.Поведенческие.description
         patternDescriptionTextView.isEditable = editingMode
         patternNameTextView.isEditable = editingMode
         patternTypeLabel.isHidden.toggle()
@@ -219,7 +227,6 @@ private extension DetailPatternViewController {
         model.patternDescription = patternDescriptionTextView.text
         model.patternName = patternNameTextView.text
         edit()
-        closure?(model)
     }
     // MARK: - Keyboard setup
     
@@ -237,23 +244,12 @@ private extension DetailPatternViewController {
             view.frame.origin.y = 0
         }
     }
-    
-   // MARK: - Capitalising
-    func capitalizingFirstLetter(_ string:String) -> String {
-        let first = string.prefix(1).capitalized
-        let other = string.dropFirst()
-        return first + other
-    }
 }
+// MARK: - TextViewDelegate
 
 extension DetailPatternViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if editingMode == true {
-            textView.becomeFirstResponder()
-        }else if editingMode == false {
-            textView.isEditable = false
-        }
     }
 }
 // MARK: - UIPicker
@@ -264,11 +260,11 @@ extension DetailPatternViewController:  UIPickerViewDataSource,UIPickerViewDeleg
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-         PatternsModel.PatternsCategory.allCases.count
+        presenter?.numberOfRowsInComponentInPickerView() ?? .zero
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-         PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == row })?.description ?? ""
+        presenter?.titleForRowInPickerView(row: row)
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -278,15 +274,12 @@ extension DetailPatternViewController:  UIPickerViewDataSource,UIPickerViewDeleg
         case .Поведенческие:
             model.category = gategory ?? model.category
             patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-            print(model.category)
         case .Структурные:
             model.category = gategory ?? model.category
             patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-            print(model.category)
         case .Порождающие:
             model.category = gategory ?? model.category
             patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-            print(model.category)
         case .none:
             print(Errors.ChangingPickerCaseForPatternEditing)
         }

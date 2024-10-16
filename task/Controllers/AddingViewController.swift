@@ -286,7 +286,6 @@ extension AddingViewController: UIImagePickerControllerDelegate,UINavigationCont
         if info[.mediaType] as? String == "public.image" {
             handleImage(info: info)
         }
-        
         DispatchQueue.main.async { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }

@@ -13,6 +13,7 @@ private enum Constants {
 protocol HomePresentationProtocol: AnyObject {
     var viewController: HomeDisplayLogic? {get set}
     var router: HomeRouterProtocol? {get set}
+    
     func cellInformation (indexPath: IndexPath) -> HomeCellModel
     func filteredPatterns(group: PatternsModel.PatternsCategory)
     func countCells (section: Int) -> Int
