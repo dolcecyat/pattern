@@ -15,6 +15,7 @@ private enum Constants {
     static let defaultTextForDescriptionTextView = "Введите описание паттерна"
     static let descriptionLabel = "Описание паттерна"
     static let addButtonLabel = "Добавить"
+    static let defaulAddImageButtonImage = "insertImage"
     static let defaultImage = UIImage(named: "abstract-factory")
 }
 
@@ -29,17 +30,16 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     var presenter:  AddingPresentationProtocol?
     
     //MARK: - UI properties
-    let imagePicker = UIImagePickerController()
     
+    private let imagePicker = ImagePicker()
     private let groupPicker = UIPickerView()
     private let addNameLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let patternNameTextField = UITextField()
     private let descriptionTextView = UITextView()
     private let addButton = UIButton()
-    private let patternImagePicker = UIButton()
-    private var pickedPatternImage = UIImage()
-    
+    private let patternImageSelectionButton = UIButton()
+  
     var closure: ((PatternsModel)->())?
     
     var model = PatternsModel(patternImage: UIImage(resource: .abstractFactory), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: .zero)
@@ -61,10 +61,7 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     private func setup() {
         let assembly = HomeAssembly()
         assembly.configurateAddingVC(self)
-        
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = false
-        imagePicker.mediaTypes = ["public.image"]
+    
         groupPicker.delegate = self
         groupPicker.dataSource = self
     }
@@ -84,7 +81,7 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
         setupAction()
         view.backgroundColor = .systemBackground
     }
-    
+
 }
 
 private extension AddingViewController {
@@ -98,7 +95,7 @@ private extension AddingViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(descriptionTextView)
         view.addSubview(addButton)
-        view.addSubview(patternImagePicker)
+        view.addSubview(patternImageSelectionButton)
     }
     
     //MARK: - makeConstraints
@@ -110,7 +107,7 @@ private extension AddingViewController {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        patternImagePicker.translatesAutoresizingMaskIntoConstraints = false
+        patternImageSelectionButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             groupPicker.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
@@ -132,16 +129,16 @@ private extension AddingViewController {
             descriptionTextView.heightAnchor.constraint(equalToConstant: 150),
             descriptionTextView.widthAnchor.constraint(equalToConstant: 350),
             
-            patternImagePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            patternImagePicker.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 40),
-            patternImagePicker.heightAnchor.constraint(equalToConstant: 60),
-            patternImagePicker.widthAnchor.constraint(equalToConstant: 60),
+            patternImageSelectionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            patternImageSelectionButton.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 40),
+            patternImageSelectionButton.heightAnchor.constraint(equalToConstant: 100),
+            patternImageSelectionButton.widthAnchor.constraint(equalToConstant: 150),
             
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: patternImagePicker.bottomAnchor, constant: 40),
+            addButton.topAnchor.constraint(equalTo: patternImageSelectionButton.bottomAnchor, constant: 40),
             addButton.widthAnchor.constraint(equalToConstant: 150),
             addButton.heightAnchor.constraint(equalToConstant: 60)
-            ])
+        ])
     }
     
     //MARK: - setupViews
@@ -163,7 +160,7 @@ private extension AddingViewController {
         descriptionLabel.text = Constants.descriptionLabel
         descriptionLabel.textAlignment = .center
         descriptionLabel.font = .systemFont(ofSize: 22)
-     
+        
         descriptionTextView.text = Constants.defaultTextForDescriptionTextView
         descriptionTextView.keyboardDismissMode = .onDrag
         descriptionTextView.textColor = .placeholderText
@@ -176,12 +173,12 @@ private extension AddingViewController {
         descriptionTextView.textContainer.maximumNumberOfLines = 20
         descriptionTextView.delegate = self
         
-        patternImagePicker.setImage( UIImage(named: "insertImage"), for: .normal)
-        patternImagePicker.layer.cornerRadius = 10
-        patternImagePicker.layer.shadowColor = UIColor.gray.cgColor
-        patternImagePicker.layer.shadowOpacity = 0.5
-        patternImagePicker.layer.shadowOffset = CGSize(width: 1, height: 1)
-        patternImagePicker.layer.shadowRadius = 5
+        patternImageSelectionButton.setImage( UIImage(named: Constants.defaulAddImageButtonImage), for: .normal)
+        patternImageSelectionButton.layer.cornerRadius = 10
+        patternImageSelectionButton.layer.shadowColor = UIColor.gray.cgColor
+        patternImageSelectionButton.layer.shadowOpacity = 0.5
+        patternImageSelectionButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+        patternImageSelectionButton.layer.shadowRadius = 5
         
         addButton.setTitle(Constants.addButtonLabel, for: .normal)
         addButton.setTitleColor(.black, for: .normal)
@@ -198,7 +195,7 @@ private extension AddingViewController {
     
     func setupAction() {
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
-        patternImagePicker.addTarget(self, action: #selector(imagePickerPressed), for: .touchUpInside)
+        patternImageSelectionButton.addTarget(self, action: #selector(iselectImageButtonPressed), for: .touchUpInside)
     }
     
     // MARK: - Add Button
@@ -206,7 +203,7 @@ private extension AddingViewController {
     @objc func addButtonPressed() {
         model.patternName = patternNameTextField.text ?? ""
         model.patternDescription = descriptionTextView.text ?? ""
-        model.patternImage = patternImagePicker.imageView?.image ??  UIImage()
+        model.patternImage = patternImageSelectionButton.imageView?.image ??  UIImage()
         
         presenter?.addButtonPressed()
         closure?(model)
@@ -214,10 +211,10 @@ private extension AddingViewController {
     
     // MARK: - Add photot picker
     
-    @objc func imagePickerPressed() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.present(self.imagePicker,animated: true,completion: nil)
+    @objc func iselectImageButtonPressed() {
+        imagePicker.showImagePicker(in: self) { image in
+            self.model.patternImage = image
+            self.patternImageSelectionButton.setImage(image, for: .normal)
         }
     }
 }
@@ -267,6 +264,7 @@ extension AddingViewController: UITextFieldDelegate {
 }
 
 // MARK: - UITextView
+
 extension AddingViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -278,24 +276,3 @@ extension AddingViewController: UITextViewDelegate {
     }
 }
 
-// MARK: - UIImagePickerControllerDelegate
-extension AddingViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if info[.mediaType] as? String == "public.image" {
-            handleImage(info: info)
-        }
-        DispatchQueue.main.async { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
-    }
-    // MARK: - Images
-    
-    func handleImage(info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            self.pickedPatternImage = image
-            patternImagePicker.setImage( image, for: .normal)
-        }
-    }
-}

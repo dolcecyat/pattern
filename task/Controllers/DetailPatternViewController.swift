@@ -16,6 +16,7 @@ private enum Constants {
     static let defaultImage = UIImage(named: "abstract-factory")
     static let numberOfComponentsforPickerCategories = 1
     static let endEditingBarButoonImage = "checkmark.circle"
+    static let selectPhotoString = "Изменить фото"
 }
 
 protocol DetailPatternDisplayLogic: UIViewController {
@@ -38,13 +39,15 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     var closure: ((PatternsModel)->())?
     var editingMode = false {
         didSet {
-            self.navigationItem.rightBarButtonItem = editingMode == true ? UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(endEditing)) : UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
+            self.navigationItem.rightBarButtonItem = editingMode == true ?  UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(endEditing)) :
+            UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         }
     }
     
     //MARK: - UI properties
-    
-    private let patternImage = UIImageView()
+    let imagePicker = ImagePicker()
+
+    private let patternImage = UIButton()
     private let favoriteImage = UIImageView()
     private let patternDescriptionTextView = UITextView()
     private let patternNameTextView = UITextView()
@@ -89,6 +92,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     override func viewDidLoad(){
         super.viewDidLoad()
         setup()
+        setUpAction()
         addViews()
         makeConstraints()
         setupViews()
@@ -150,10 +154,11 @@ private extension DetailPatternViewController {
         groupPicker.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 0),
         groupPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         groupPicker.widthAnchor.constraint(equalToConstant: 300),
-        groupPicker.heightAnchor.constraint(equalToConstant: 100)])
+        groupPicker.heightAnchor.constraint(equalToConstant: 100),
+        ])
     }
     
-    //MARK: - setupViews
+    //MARK: - setupViews and Actions
     
     func setupViews() {
         view.backgroundColor = .systemBackground
@@ -161,8 +166,13 @@ private extension DetailPatternViewController {
                                                                        UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit)) :
                                                                        UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         
-        patternImage.image = model.patternImage
+        patternImage.setImage(model.patternImage, for: .disabled)
+        patternImage.setTitle("", for: .disabled)
+        patternImage.setTitle(Constants.selectPhotoString, for: .normal)
+        patternImage.isEnabled = false
         patternImage.contentMode = .scaleAspectFit
+        patternImage.setTitleColor(.black, for: .normal)
+        patternImage.titleLabel?.font = .systemFont(ofSize: 28)
         patternImage.backgroundColor = .white
         patternImage.layer.cornerRadius = 10
         patternImage.layer.shadowColor = UIColor.gray.cgColor
@@ -201,11 +211,25 @@ private extension DetailPatternViewController {
         patternTypeLabel.font = .systemFont(ofSize: 24)
         patternTypeLabel.textAlignment = .left
         patternTypeLabel.numberOfLines = 2
-        patternImage.isHidden = editingMode
         
         groupPicker.isHidden = true
         
         favoriteImage.image = model.isFavorite ? UIImage(named: Constants.redHeartImage) : UIImage()
+    }
+    
+    func setUpAction() {
+        patternImage.addTarget(self, action: #selector(selectPhotoButtonPressed), for: .touchUpInside)
+    }
+    
+    // MARK: - Changin Photo
+    @objc func selectPhotoButtonPressed() {
+        if editingMode == true {
+            imagePicker.showImagePicker(in: self) { [weak self]
+                image in self?.model.patternImage = image
+                self?.patternImage.setImage(image, for: .normal)
+                self?.patternImage.setImage(image, for: .disabled)
+            }
+        }
     }
     
     //MARK: - Editing Button Pressed
@@ -214,11 +238,12 @@ private extension DetailPatternViewController {
         print("EDITING")
         editingMode.toggle()
         print(editingMode)
-        model.category = .Поведенческие
-        patternTypeLabel.text = Constants.groupString + PatternsModel.PatternsCategory.Поведенческие.description
+        model.category = model.category
+        patternTypeLabel.text = Constants.groupString + model.category.description
         patternDescriptionTextView.isEditable = editingMode
         patternNameTextView.isEditable = editingMode
         patternTypeLabel.isHidden.toggle()
+        patternImage.isEnabled.toggle()
         groupPicker.isHidden.toggle()
     }
     

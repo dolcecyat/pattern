@@ -8,6 +8,26 @@
 import Foundation
 import UIKit
 
-class ImagePicker {
+class ImagePicker: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var imagePickerController: UIImagePickerController?
+    var complition: ((UIImage) -> ())?
+    
+    func showImagePicker(in viewController:UIViewController,complition: ((UIImage) -> ())?) {
+        self.complition = complition
+        imagePickerController = UIImagePickerController()
+        imagePickerController?.delegate = self
+        viewController.present(imagePickerController!, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            self.complition?(image)
+            picker.dismiss(animated: true)
+        }
+    }
+  
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
 }
