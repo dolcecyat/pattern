@@ -11,7 +11,7 @@ import UIKit
 private enum Constants {
     static let redHeartImage = "redHeart"
     static let greyHeartImage = "greyHeart"
-    static let groupString = "Группа:\n"
+    static let groupString = "Группа: "
     static let editBarButtonImageName = "rectangle.and.pencil.and.ellipsis.rtl"
     static let defaultImage = UIImage(named: "abstract-factory")
     static let numberOfComponentsforPickerCategories = 1
@@ -51,8 +51,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     private let favoriteImage = UIImageView()
     private let patternDescriptionTextView = UITextView()
     private let patternNameTextView = UITextView()
-    private var patternTypeLabel = UILabel()
-    private let groupPicker = UIPickerView()
+    private var changeTypeButton = DropDownButton()
     
     // MARK: - Init/deinit
     
@@ -76,9 +75,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     private func setup() {
         let assembly = HomeAssembly()
         assembly.configurateDetailVC(self)
-        
-        groupPicker.delegate = self
-        groupPicker.dataSource = self
+            
         patternDescriptionTextView.delegate = self
         patternNameTextView.delegate = self
     }
@@ -87,6 +84,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
         patternDescriptionTextView.resignFirstResponder()
         patternNameTextView.resignFirstResponder()
     }
+    
     //MARK: - View lifecycle
     
     override func viewDidLoad(){
@@ -100,61 +98,60 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        closure?(model)
+        model.category = changeTypeButton.currentType
+        changeTypeButton.removeFromSuperview()
+        if editingMode == false {
+        }else {
+            closure?(model)
+        }
     }
 }
 private extension DetailPatternViewController {
-
+    
     //MARK: - addViews
     
     func addViews() {
         view.addSubview(patternNameTextView)
-        view.addSubview(patternTypeLabel)
         view.addSubview(patternDescriptionTextView)
         view.addSubview(patternImage)
         view.addSubview(favoriteImage)
-        view.addSubview(groupPicker)
+        view.addSubview(changeTypeButton)
     }
     
     //MARK: - makeConstraints
     
     func makeConstraints() {
         patternImage.translatesAutoresizingMaskIntoConstraints = false
-        patternTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         patternNameTextView.translatesAutoresizingMaskIntoConstraints = false
         favoriteImage.translatesAutoresizingMaskIntoConstraints = false
         patternDescriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        groupPicker.translatesAutoresizingMaskIntoConstraints = false
+        changeTypeButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        patternImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 110),
-        patternImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-        patternImage.heightAnchor.constraint(equalToConstant: 200),
-        patternImage.widthAnchor.constraint(equalToConstant: 325),
-        
-        patternNameTextView.topAnchor.constraint(equalTo: patternImage.bottomAnchor, constant: 20),
-        patternNameTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-        patternNameTextView.heightAnchor.constraint(equalToConstant: 50),
-        patternNameTextView.widthAnchor.constraint(equalToConstant: 320),
-        
-        
-        patternTypeLabel.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 20),
-        patternTypeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-        
-        patternDescriptionTextView.topAnchor.constraint(equalTo: patternTypeLabel.bottomAnchor, constant: 20),
-        patternDescriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-        patternDescriptionTextView.widthAnchor.constraint(equalToConstant: 330),
-        patternDescriptionTextView.heightAnchor.constraint(equalToConstant: 250),
-        
-        favoriteImage.topAnchor.constraint(equalTo: patternImage.bottomAnchor, constant: 35),
-        favoriteImage.trailingAnchor.constraint(equalTo: patternNameTextView.leadingAnchor,constant: 0),
-        favoriteImage.heightAnchor.constraint(equalToConstant: 18),
-        favoriteImage.widthAnchor.constraint(equalToConstant: 18),
-        
-        groupPicker.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 0),
-        groupPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        groupPicker.widthAnchor.constraint(equalToConstant: 300),
-        groupPicker.heightAnchor.constraint(equalToConstant: 100),
+            patternImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 110),
+            patternImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            patternImage.heightAnchor.constraint(equalToConstant: 200),
+            patternImage.widthAnchor.constraint(equalToConstant: 325),
+            
+            patternNameTextView.topAnchor.constraint(equalTo: patternImage.bottomAnchor, constant: 20),
+            patternNameTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            patternNameTextView.heightAnchor.constraint(equalToConstant: 50),
+            patternNameTextView.widthAnchor.constraint(equalToConstant: 320),
+            
+            patternDescriptionTextView.topAnchor.constraint(equalTo: changeTypeButton.bottomAnchor, constant: 30),
+            patternDescriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            patternDescriptionTextView.widthAnchor.constraint(equalToConstant: 330),
+            patternDescriptionTextView.heightAnchor.constraint(equalToConstant: 250),
+            
+            favoriteImage.topAnchor.constraint(equalTo: patternImage.bottomAnchor, constant: 35),
+            favoriteImage.trailingAnchor.constraint(equalTo: patternNameTextView.leadingAnchor,constant: -2),
+            favoriteImage.heightAnchor.constraint(equalToConstant: 18),
+            favoriteImage.widthAnchor.constraint(equalToConstant: 18),
+            
+            changeTypeButton.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 20),
+            changeTypeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            changeTypeButton.widthAnchor.constraint(equalToConstant: 330),
+            changeTypeButton.heightAnchor.constraint(equalToConstant: 30),
         ])
     }
     
@@ -163,8 +160,8 @@ private extension DetailPatternViewController {
     func setupViews() {
         view.backgroundColor = .systemBackground
         self.navigationItem.rightBarButtonItem = editingMode == true ?
-                                                                       UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit)) :
-                                                                       UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
+        UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit)) :
+        UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         
         patternImage.setImage(model.patternImage, for: .disabled)
         patternImage.setTitle("", for: .disabled)
@@ -179,7 +176,7 @@ private extension DetailPatternViewController {
         patternImage.layer.shadowOpacity = 0.9
         patternImage.layer.shadowOffset = CGSize(width: 1, height: 1)
         patternImage.layer.shadowRadius = 5
-
+        
         patternDescriptionTextView.text = presenter?.capitalizingFirstLetter(model.patternDescription)
         patternDescriptionTextView.textColor = .black
         patternDescriptionTextView.font = UIFont.systemFont(ofSize: 20)
@@ -195,7 +192,7 @@ private extension DetailPatternViewController {
         patternDescriptionTextView.isEditable = editingMode
         
         patternNameTextView.textAlignment = .left
-        patternNameTextView.font = .systemFont(ofSize: 28)
+        patternNameTextView.font = .systemFont(ofSize: 24)
         patternNameTextView.text = model.patternName
         patternNameTextView.isEditable = editingMode
         patternNameTextView.keyboardType = UIKeyboardType.default
@@ -206,22 +203,31 @@ private extension DetailPatternViewController {
         patternNameTextView.layer.shadowColor = UIColor.gray.cgColor
         patternNameTextView.layer.shadowOpacity = 0.9
         patternNameTextView.layer.shadowOffset = CGSize(width: 1, height: 1)
-       
-        patternTypeLabel.text = Constants.groupString + model.category.description
-        patternTypeLabel.font = .systemFont(ofSize: 24)
-        patternTypeLabel.textAlignment = .left
-        patternTypeLabel.numberOfLines = 2
         
-        groupPicker.isHidden = true
+        changeTypeButton.isUserInteractionEnabled = false
+        changeTypeButton.backgroundColor = .white
+        changeTypeButton.setTitleColor(.black, for: .normal)
+        changeTypeButton.layer.borderWidth = 1
+        changeTypeButton.layer.cornerRadius = 9
+        changeTypeButton.layer.borderColor = UIColor.systemGray5.cgColor
+        changeTypeButton.titleLabel?.font = .systemFont(ofSize: 18)
+        changeTypeButton.setTitle(Constants.groupString + model.category.description, for: .normal)
         
         favoriteImage.image = model.isFavorite ? UIImage(named: Constants.redHeartImage) : UIImage()
     }
     
     func setUpAction() {
         patternImage.addTarget(self, action: #selector(selectPhotoButtonPressed), for: .touchUpInside)
+        changeTypeButton.addTarget(self, action: #selector(changePatternType), for: .touchUpInside)
     }
     
-    // MARK: - Changin Photo
+    // MARK: - change type
+    @objc func changePatternType() {
+        let type = changeTypeButton.currentType
+        model.category = type
+    }
+    
+    // MARK: - Select Photo
     @objc func selectPhotoButtonPressed() {
         if editingMode == true {
             imagePicker.showImagePicker(in: self) { [weak self]
@@ -233,18 +239,15 @@ private extension DetailPatternViewController {
     }
     
     //MARK: - Editing Button Pressed
-
+    
     @objc func edit() {
         print("EDITING")
         editingMode.toggle()
         print(editingMode)
-        model.category = model.category
-        patternTypeLabel.text = Constants.groupString + model.category.description
         patternDescriptionTextView.isEditable = editingMode
         patternNameTextView.isEditable = editingMode
-        patternTypeLabel.isHidden.toggle()
+        changeTypeButton.isUserInteractionEnabled = editingMode
         patternImage.isEnabled.toggle()
-        groupPicker.isHidden.toggle()
     }
     
     @objc func endEditing() {
@@ -273,40 +276,6 @@ private extension DetailPatternViewController {
 // MARK: - TextViewDelegate
 
 extension DetailPatternViewController: UITextViewDelegate {
-    
     func textViewDidBeginEditing(_ textView: UITextView) {
-    }
-}
-// MARK: - UIPicker
-extension DetailPatternViewController:  UIPickerViewDataSource,UIPickerViewDelegate {
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        Constants.numberOfComponentsforPickerCategories
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        presenter?.numberOfRowsInComponentInPickerView() ?? .zero
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        presenter?.titleForRowInPickerView(row: row)
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == row })
-        switch gategory {
-        case .Поведенческие:
-            model.category = gategory ?? model.category
-            patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-        case .Структурные:
-            model.category = gategory ?? model.category
-            patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-        case .Порождающие:
-            model.category = gategory ?? model.category
-            patternTypeLabel.text = Constants.groupString + (gategory?.description ?? PatternsModel.PatternsCategory.Поведенческие.description)
-        case .none:
-            print(Errors.ChangingPickerCaseForPatternEditing)
-        }
     }
 }
