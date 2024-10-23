@@ -99,11 +99,9 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     
     override func viewWillDisappear(_ animated: Bool) {
         model.category = changeTypeButton.currentType
+        model.patternImage = patternImage.currentImage ?? UIImage()
         changeTypeButton.removeFromSuperview()
-        if editingMode == false {
-        }else {
-            closure?(model)
-        }
+        closure?(model)
     }
 }
 private extension DetailPatternViewController {
@@ -231,7 +229,7 @@ private extension DetailPatternViewController {
     @objc func selectPhotoButtonPressed() {
         if editingMode == true {
             imagePicker.showImagePicker(in: self) { [weak self]
-                image in self?.model.patternImage = image
+                image in /*self?.model.patternImage = image*/
                 self?.patternImage.setImage(image, for: .normal)
                 self?.patternImage.setImage(image, for: .disabled)
             }
@@ -248,6 +246,7 @@ private extension DetailPatternViewController {
         patternNameTextView.isEditable = editingMode
         changeTypeButton.isUserInteractionEnabled = editingMode
         patternImage.isEnabled.toggle()
+        changeTypeButton.currentType = model.category
     }
     
     @objc func endEditing() {
