@@ -11,6 +11,7 @@ private enum Constants {
     static let deleteSwipeAction = "Удалить"
     static let plusImage = "plus"
     static let listBlletImage = "list.bullet"
+    static let searchImage = "magnifyingglass"
     static let designPattensTitleForNavigationBar = "Паттерны проектирования"
     static let separatorInsertForBottomTableView = 10.0
     static let durationForShowMenuView = 0.5
@@ -28,12 +29,17 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     
     //MARK: - UI properties
     
+    var searchBar = UISearchBar()
+   
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     var menuView = MenuView()
     var menuViewWidthConstraint: NSLayoutConstraint?
+    var menuRightNavBarButton = UIBarButtonItem()
+    var searchRightNavBarButton = UIBarButtonItem()
     
     // MARK: - Data Properties
     
+    var searching: Bool = false
     private var shouldExpanding = true
     
     // MARK: - Init
@@ -55,6 +61,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
         addViews()
         setupViews()
         makeConstraints()
+        setDelegates()
     }
     
     // MARK: - Setup
@@ -69,10 +76,16 @@ private extension HomeViewController {
     //MARK: - addViews
     
     private func addViews() {
+        view.addSubview(searchBar)
         view.addSubview(tableView)
         navigationController?.view.addSubview(menuView)
     }
     
+    func setDelegates() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        searchBar.delegate = self
+    }
     //MARK: - makeConstraints
     
     private func makeConstraints() {
@@ -103,8 +116,6 @@ private extension HomeViewController {
     // MARK: - TableView configuration
     
     private func configureHomeTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
@@ -121,17 +132,25 @@ private extension HomeViewController {
     //MARK: - setupNavBar
     
     private func setupNavBar() {
+        let attributesForNavBar = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title1)]
         self.navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.barStyle = .black
-        
+        navigationController?.navigationBar.largeTitleTextAttributes = attributesForNavBar
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+
         navigationItem.title = Constants.designPattensTitleForNavigationBar
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.plusImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(addButton))
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.listBlletImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
+         menuRightNavBarButton = UIBarButtonItem(image: UIImage(systemName: Constants.listBlletImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
+         searchRightNavBarButton = UIBarButtonItem(image: UIImage(systemName: Constants.searchImage)?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(handleSearchButton))
+      
+        showRightBarButtons(shouldShow: true)
     }
     
     //MARK: - navigationBar Actions
-    
+    @objc private func handleSearchButton() {
+        search(shouldShow: true)
+      
+        searchBar.becomeFirstResponder()
+    }
     @objc private func handleMenuToggle() {
         self.menuViewWidthConstraint?.isActive = false
         if shouldExpanding == true {
@@ -152,6 +171,21 @@ private extension HomeViewController {
     @objc private func addButton() {
         presenter?.openAddingVC()
         tableView.reloadData()
+    }
+    
+    // MARK: - Search
+    func showRightBarButtons(shouldShow: Bool) {
+        if shouldShow {
+            navigationItem.rightBarButtonItems = [menuRightNavBarButton,searchRightNavBarButton]
+        }else {
+            navigationItem.rightBarButtonItems = []
+        }
+    }
+    func search(shouldShow: Bool) {
+        showRightBarButtons(shouldShow: !shouldShow)
+        searching = shouldShow
+        searchBar.showsCancelButton = shouldShow
+        navigationItem.titleView = shouldShow ? searchBar : nil
     }
 }
     // MARK: - UITableViewDelegate,  UITableViewDataSource
@@ -180,27 +214,66 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
         return swipeConfiguration
     }
     
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         presenter?.getSectionName(section: section)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        presenter?.getNumberOfSections() ?? .zero
+        if searching == false {
+            presenter?.getNumberOfSections() ?? .zero
+        }else {
+            1
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let rowsInSection = presenter?.countCells(section: section) ?? .zero
-        return rowsInSection
+        if searching == false {
+            return  presenter?.countCells(section: section) ?? .zero
+        }else {
+            return presenter?.countSearchingCells() ?? .zero
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
-              let model = presenter?.cellInformation(indexPath: indexPath) else {return UITableViewCell() }
-        cell.configure(model: model)
-        cell.clousure = { [weak self] isFavorite in
-            guard let self = self else {return}
-            self.presenter?.addingPatternToFavorite(indexPath: indexPath, isFavorite: isFavorite)
+        if searching == false {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
+                  let model = presenter?.cellInformation(indexPath: indexPath) else {return UITableViewCell() }
+            cell.configure(model: model)
+            cell.clousure = { [weak self] isFavorite in
+                guard let self = self else {return}
+                self.presenter?.addingPatternToFavorite(indexPath: indexPath, isFavorite: isFavorite)
+            }
+            return cell
+        }else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell, let model = presenter?.searchingCellInformation(indexPath:indexPath) else {return UITableViewCell() }
+            cell.configure(model: model)
+            return cell
         }
-        return cell
+    }
+}
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        search(shouldShow: false)
+        updateData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        search(shouldShow: false)
+        updateData()
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.text = ""
+        return true
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count > 2 {
+            presenter?.searchingPattern(searchText: searchText)
+            updateData()
+        }else if searchText.count == 0 {
+            search(shouldShow: false)
+            updateData()
+        }
+       
     }
 }

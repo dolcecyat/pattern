@@ -26,6 +26,9 @@ protocol HomePresentationProtocol: AnyObject {
     func openAddingVC()
     func getNewpattern(modelOfNewPattern: PatternsModel)
     func editPattertnAt(pattern: PatternsModel)
+    func searchingPattern(searchText: String) /*-> [PatternsModel]*/
+    func countSearchingCells() -> Int
+    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel
 }
 
 class HomePresenter: HomePresentationProtocol {
@@ -39,6 +42,7 @@ class HomePresenter: HomePresentationProtocol {
     
     var cellData = PatternData().patternData
     
+    var searchedPatterns = [PatternsModel]()
     var currentOpenedDetailPatternAtIndexPath: IndexPath = [0,0]
     var behavioralPatternsArray: [PatternsModel] = []
     var genegativePatternsArray: [PatternsModel] = []
@@ -227,5 +231,21 @@ class HomePresenter: HomePresentationProtocol {
         case .none:
             print(Errors.FilteringPatternsError)
         }
+    }
+    
+    // MARK: - Searching
+    
+    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel{
+        let modelForCell = searchedPatterns[indexPath.row]
+        let cellModel = HomeCellModel(description: modelForCell.patternDescription, image: modelForCell.patternImage, name: modelForCell.patternName, viewNumber: modelForCell.numberOfViews, isFavorite: modelForCell.isFavorite, category: modelForCell.category)
+        return cellModel
+    }
+    
+    func searchingPattern(searchText: String)/* -> [PatternsModel]*/ {
+       searchedPatterns = cellData.filter { $0.patternName.prefix(searchText.count) == searchText }
+    }
+    
+    func countSearchingCells() -> Int {
+        searchedPatterns.count
     }
 }

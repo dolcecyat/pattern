@@ -16,7 +16,7 @@ protocol DropDownProtocol {
 }
 
 class DropDownButton: UIButton, DropDownProtocol {
-    deinit{(print(currentType))}
+    
     var currentType = PatternsModel.PatternsCategory.Поведенческие
     var dropView = DropDownView()
     var isOpen = false
@@ -139,7 +139,8 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let gat = PatternsModel.PatternsCategory.allCases.first { $0.sectionNumber == indexPath.row }
-        delegate?.dropDownPressed(type: gat ?? .Поведенческие)
+        guard let newCategory = gat else {return}
+        delegate?.dropDownPressed(type: newCategory)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -22,6 +22,7 @@
 		EDDAF3A32CBD05590073DBFC /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */; };
 		EDDAF3A62CBFF7310073DBFC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */; };
 		EDDAF3A82CC7FFB90073DBFC /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */; };
+		EDDAF3AA2CCD1AA60073DBFC /* ScrollViewForZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */; };
 		EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD02C664DAD006E843C /* AppDelegate.swift */; };
 		EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */; };
 		EDF6AADA2C664DB0006E843C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF6AAD92C664DB0006E843C /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 		EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
 		EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
+		EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewForZoom.swift; sourceTree = "<group>"; };
 		EDF6AACD2C664DAD006E843C /* taskwithUIView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskwithUIView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF6AAD02C664DAD006E843C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 		EDF6AAC42C664DAD006E843C = {
 			isa = PBXGroup;
 			children = (
+				EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */,
 				EDF6AACF2C664DAD006E843C /* task */,
 				EDF6AACE2C664DAD006E843C /* Products */,
 			);
@@ -252,6 +255,7 @@
 				EDF6AAE52C665003006E843C /* HomePresenter.swift in Sources */,
 				EDDAF3A32CBD05590073DBFC /* DetailRouter.swift in Sources */,
 				ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */,
+				EDDAF3AA2CCD1AA60073DBFC /* ScrollViewForZoom.swift in Sources */,
 				EDDAF3A12CBD054B0073DBFC /* DetailPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
