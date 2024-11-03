@@ -102,7 +102,6 @@
 		EDF6AAC42C664DAD006E843C = {
 			isa = PBXGroup;
 			children = (
-				EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */,
 				EDF6AACF2C664DAD006E843C /* task */,
 				EDF6AACE2C664DAD006E843C /* Products */,
 			);
@@ -127,7 +126,6 @@
 				EDF6AAF52C681FD8006E843C /* Model */,
 				EDF6AAD02C664DAD006E843C /* AppDelegate.swift */,
 				EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */,
-				EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */,
 				EDDAF3942CAFF6D50073DBFC /* Errors.swift */,
 				EDF6AAD92C664DB0006E843C /* Assets.xcassets */,
 				EDF6AADB2C664DB0006E843C /* LaunchScreen.storyboard */,
@@ -159,9 +157,11 @@
 		EDF6AAF62C681FF0006E843C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */,
-				EDF6AAF22C67A013006E843C /* HomeTableViewCell.swift */,
 				ED7C6F342C6E30A1009B511D /* MenuView.swift */,
+				EDF6AAF22C67A013006E843C /* HomeTableViewCell.swift */,
+				EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */,
+				EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */,
+				EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

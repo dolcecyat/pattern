@@ -23,7 +23,7 @@ protocol DetailPatternDisplayLogic: UIViewController {
     var presenter: DetailPresentationProtocol? {get set}
 }
 
-class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  {
+class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic {
     var router: (any HomeRouterProtocol)?
     var presenter: DetailPresentationProtocol? 
     
@@ -42,8 +42,6 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
             UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
         }
     }
-    
-    
     //MARK: - UI properties
     let imagePicker = ImagePicker()
     
@@ -56,14 +54,13 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     
     // MARK: - Init/deinit
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    required init?(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -84,7 +81,7 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic  
     
     //MARK: - View lifecycle
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         setUpAction()
@@ -262,6 +259,7 @@ private extension DetailPatternViewController {
         changeTypeButton.isUserInteractionEnabled = editingMode
         patternImage.isEnabled.toggle()
     }
+    
     // MARK: - Keyboard setup
     
     func keyboardSetUp() {

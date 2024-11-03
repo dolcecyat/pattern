@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ScrollViewForZoom: UIScrollView{
+class ScrollViewForZoom: UIScrollView {
     
     var button: UIButton?
     

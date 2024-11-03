@@ -99,7 +99,7 @@ class HomeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(model: HomeCellModel){
+    func configure(model: HomeCellModel) {
         descriptionLabel.text = model.description
         patternImageView.image = model.image
         nameLabel.text = model.name
@@ -107,7 +107,7 @@ class HomeTableViewCell: UITableViewCell {
         isFavorite = model.isFavorite
     }
     
-    func addView(){
+    func addView() {
         contentView.addSubview(cellFrame)
         
         cellFrame.addSubview(patternImageView)

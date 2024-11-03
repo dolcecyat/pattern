@@ -23,7 +23,7 @@ protocol AddingDisplayLogic: UIViewController {
     var presenter: AddingPresentationProtocol? {get set}
 }
 
-class AddingViewController: UIViewController, AddingDisplayLogic  {
+class AddingViewController: UIViewController, AddingDisplayLogic {
     
     //MARK: - MVP Properties
     
@@ -46,12 +46,12 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     
     // MARK: - Init
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
     }
     
-    required init?(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -73,7 +73,7 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
     
     //MARK: - View lifecycle
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
         makeConstraints()
@@ -81,7 +81,6 @@ class AddingViewController: UIViewController, AddingDisplayLogic  {
         setupAction()
         view.backgroundColor = .systemBackground
     }
-
 }
 
 private extension AddingViewController {
@@ -236,7 +235,6 @@ extension AddingViewController:  UIPickerViewDataSource,UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == row })
         switch gategory {
         case .Поведенческие:
@@ -268,7 +266,7 @@ extension AddingViewController: UITextFieldDelegate {
 extension AddingViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if (textView.text  == Constants.defaultTextForDescriptionTextView && textView.textColor == .placeholderText){
+        if (textView.text  == Constants.defaultTextForDescriptionTextView && textView.textColor == .placeholderText) {
             textView.text = ""
             textView.textColor = .black
         }

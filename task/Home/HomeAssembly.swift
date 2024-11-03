@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class HomeAssembly{
+final class HomeAssembly {
+    
     func configurateOne(_ vc: HomeDisplayLogic) {
         let presenter = HomePresenter()
         let router = HomeRouter()
@@ -15,7 +16,6 @@ final class HomeAssembly{
         presenter.viewController = vc
         presenter.router = router
         router.presenter = presenter
-        
     }
     func configurateAddingVC(_ vc: AddingDisplayLogic) {
         let router = AddingRouter()
@@ -25,6 +25,7 @@ final class HomeAssembly{
         presenter.router = router
         vc.presenter = presenter
     }
+    
     func configurateDetailVC(_ vc: DetailPatternDisplayLogic) {
         let router = DetailRouter()
         let presenter = DetailPresenter()

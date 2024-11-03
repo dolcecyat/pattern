@@ -9,7 +9,6 @@ import UIKit
 
 protocol DetailRouterProtocol: AnyObject {
     var presenter: DetailPresentationProtocol? {get set}
-   
 }
 
 class DetailRouter: DetailRouterProtocol {

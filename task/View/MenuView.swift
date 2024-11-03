@@ -77,7 +77,7 @@ class MenuView: UIView {
     
     // MARK: - Building Hstacks
     
-    func buildHstack (stack: UIStackView,text: String){
+    func buildHstack (stack: UIStackView,text: String) {
         let image = UIImageView(image: UIImage(systemName: Constans.arrowRightImage)?.withTintColor(UIColor(.white), renderingMode: .alwaysOriginal))
         let label = UILabel()
         label.text = text

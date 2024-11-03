@@ -26,7 +26,7 @@ protocol HomePresentationProtocol: AnyObject {
     func openAddingVC()
     func getNewpattern(modelOfNewPattern: PatternsModel)
     func editPattertnAt(pattern: PatternsModel)
-    func searchingPattern(searchText: String) /*-> [PatternsModel]*/
+    func searchingPattern(searchText: String)
     func countSearchingCells() -> Int
     func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel
 }
@@ -79,7 +79,7 @@ class HomePresenter: HomePresentationProtocol {
         return PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == section })?.description ?? ""
     }
 
-    func countCells (section: Int) -> Int{
+    func countCells (section: Int) -> Int {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == section })
         var rowsInSection = 0
         switch gategory{
@@ -132,7 +132,7 @@ class HomePresenter: HomePresentationProtocol {
         }
     }
     
-    private func plusViews(patternInGroup: [PatternsModel],indexPath: IndexPath)-> Int{
+    private func plusViews(patternInGroup: [PatternsModel],indexPath: IndexPath)-> Int {
         var views = patternInGroup[indexPath.row].numberOfViews
         views += 1
         return views
@@ -140,7 +140,7 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Deleting Patterns
     
-    func deletePattern (indexPath: IndexPath){
+    func deletePattern (indexPath: IndexPath) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
         case .Поведенческие:
@@ -159,8 +159,7 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Opening details about pattern
     
-    func openPatternDetails (indexPath: IndexPath){
-        currentOpenedDetailPatternAtIndexPath = indexPath
+    func openPatternDetails (indexPath: IndexPath) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
@@ -191,13 +190,15 @@ class HomePresenter: HomePresentationProtocol {
         viewController?.updateData()
     }
     
+    // MARK: - Open AddVC
+    
     func openAddingVC() {
         router?.showAddingVC()
     }
     
     // MARK: - AddingNewPattern
     
-    func getNewpattern(modelOfNewPattern: PatternsModel){
+    func getNewpattern(modelOfNewPattern: PatternsModel) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == modelOfNewPattern.category.description })
         switch gategory{
         case .Поведенческие:
@@ -215,6 +216,7 @@ class HomePresenter: HomePresentationProtocol {
     }
     
     // MARK: - Editing Pattern
+    
     func editPattertnAt(pattern: PatternsModel) {
         deletePattern(indexPath: currentOpenedDetailPatternAtIndexPath)
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == pattern.category.description })
@@ -235,14 +237,15 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Searching
     
-    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel{
+    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel {
         let modelForCell = searchedPatterns[indexPath.row]
         let cellModel = HomeCellModel(description: modelForCell.patternDescription, image: modelForCell.patternImage, name: modelForCell.patternName, viewNumber: modelForCell.numberOfViews, isFavorite: modelForCell.isFavorite, category: modelForCell.category)
         return cellModel
     }
     
-    func searchingPattern(searchText: String)/* -> [PatternsModel]*/ {
-       searchedPatterns = cellData.filter { $0.patternName.prefix(searchText.count) == searchText }
+    func searchingPattern(searchText: String) {
+        let allPatternsForSearching = behavioralPatternsArray + structuralPatternsArray + genegativePatternsArray
+       searchedPatterns = allPatternsForSearching.filter { $0.patternName.prefix(searchText.count) == searchText }
     }
     
     func countSearchingCells() -> Int {

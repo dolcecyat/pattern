@@ -163,7 +163,7 @@ class DropDownCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addView(){
+    func addView() {
         self.addSubview(label)
     }
     
