@@ -85,7 +85,8 @@ class HomeTableViewCell: UITableViewCell {
         }
     }
     
-    var clousure: ((Bool)->())?
+    var clousure: (()->())?
+    var searhingClosure: ((Bool)-> ())?
     
     // MARK: - Init
     
@@ -99,11 +100,11 @@ class HomeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(model: HomeCellModel) {
-        descriptionLabel.text = model.description
-        patternImageView.image = model.image
-        nameLabel.text = model.name
-        viewLabel.text = "Просмотренно раз: \(model.viewNumber)"
+    func configure(model: PatternsModel) {
+        descriptionLabel.text = model.patternDescription
+        patternImageView.image = model.patternImage.getImage()
+        nameLabel.text = model.patternName
+        viewLabel.text = "Просмотренно раз: \(model.numberOfViews)"
         isFavorite = model.isFavorite
     }
     
@@ -158,6 +159,6 @@ class HomeTableViewCell: UITableViewCell {
     // MARK: - Handlers
     
     @objc func heartButtonPressed() {
-        clousure?(isFavorite)
+        clousure?()
     }
 }

@@ -10,7 +10,6 @@
 		ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F342C6E30A1009B511D /* MenuView.swift */; };
 		ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */; };
 		ED7C6F3D2C8F2A3C009B511D /* PaternData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */; };
-		ED7C6F3F2C95841A009B511D /* HomeCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */; };
 		ED7C6F432CA2F20A009B511D /* HomeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */; };
 		ED7C6F452CA2F218009B511D /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C6F442CA2F218009B511D /* HomeRouter.swift */; };
 		EDDAF3932CAE91290073DBFC /* DetailPatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */; };
@@ -23,6 +22,11 @@
 		EDDAF3A62CBFF7310073DBFC /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */; };
 		EDDAF3A82CC7FFB90073DBFC /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */; };
 		EDDAF3AA2CCD1AA60073DBFC /* ScrollViewForZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */; };
+		EDDAF3AF2CE7C61C0073DBFC /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3AE2CE7C61C0073DBFC /* DropDownCell.swift */; };
+		EDDAF3B12CE7C6840073DBFC /* DropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3B02CE7C6840073DBFC /* DropDownView.swift */; };
+		EDDAF3B32CE9FEBD0073DBFC /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3B22CE9FEBD0073DBFC /* Image.swift */; };
+		EDDAF3B52CE9FEE90073DBFC /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3B42CE9FEE90073DBFC /* Storage.swift */; };
+		EDDAF3B72CEA44D60073DBFC /* ChangeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAF3B62CEA44D60073DBFC /* ChangeImage.swift */; };
 		EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD02C664DAD006E843C /* AppDelegate.swift */; };
 		EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */; };
 		EDF6AADA2C664DB0006E843C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDF6AAD92C664DB0006E843C /* Assets.xcassets */; };
@@ -36,7 +40,6 @@
 		ED7C6F342C6E30A1009B511D /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternModel.swift; sourceTree = "<group>"; };
 		ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaternData.swift; sourceTree = "<group>"; };
-		ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCellModel.swift; sourceTree = "<group>"; };
 		ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAssembly.swift; sourceTree = "<group>"; };
 		ED7C6F442CA2F218009B511D /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 		EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPatternViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +52,11 @@
 		EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
 		EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewForZoom.swift; sourceTree = "<group>"; };
+		EDDAF3AE2CE7C61C0073DBFC /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		EDDAF3B02CE7C6840073DBFC /* DropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownView.swift; sourceTree = "<group>"; };
+		EDDAF3B22CE9FEBD0073DBFC /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		EDDAF3B42CE9FEE90073DBFC /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		EDDAF3B62CEA44D60073DBFC /* ChangeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeImage.swift; sourceTree = "<group>"; };
 		EDF6AACD2C664DAD006E843C /* taskwithUIView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskwithUIView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDF6AAD02C664DAD006E843C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +84,7 @@
 			children = (
 				EDDAF39A2CB6B0010073DBFC /* AddingPresenter.swift */,
 				EDDAF39C2CB6B02F0073DBFC /* AddingRouter.swift */,
+				EDDAF3982CB28B430073DBFC /* AddingViewController.swift */,
 			);
 			path = Adding;
 			sourceTree = "<group>";
@@ -83,6 +92,8 @@
 		EDDAF39F2CB94AA80073DBFC /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				EDDAF3AB2CE7C5470073DBFC /* Subviews */,
+				EDF6AAE62C66502F006E843C /* HomeViewController.swift */,
 				ED7C6F422CA2F20A009B511D /* HomeAssembly.swift */,
 				EDF6AAE42C665003006E843C /* HomePresenter.swift */,
 				ED7C6F442CA2F218009B511D /* HomeRouter.swift */,
@@ -93,15 +104,47 @@
 		EDDAF3A42CBD057A0073DBFC /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				EDDAF3AC2CE7C5810073DBFC /* Subviews */,
 				EDDAF3A02CBD054B0073DBFC /* DetailPresenter.swift */,
 				EDDAF3A22CBD05590073DBFC /* DetailRouter.swift */,
+				EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		EDDAF3AB2CE7C5470073DBFC /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				ED7C6F342C6E30A1009B511D /* MenuView.swift */,
+				EDF6AAF22C67A013006E843C /* HomeTableViewCell.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		EDDAF3AC2CE7C5810073DBFC /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */,
+				EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */,
+				EDDAF3AD2CE7C6090073DBFC /* DropDown */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		EDDAF3AD2CE7C6090073DBFC /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */,
+				EDDAF3AE2CE7C61C0073DBFC /* DropDownCell.swift */,
+				EDDAF3B02CE7C6840073DBFC /* DropDownView.swift */,
+			);
+			path = DropDown;
 			sourceTree = "<group>";
 		};
 		EDF6AAC42C664DAD006E843C = {
 			isa = PBXGroup;
 			children = (
+				EDDAF3B62CEA44D60073DBFC /* ChangeImage.swift */,
 				EDF6AACF2C664DAD006E843C /* task */,
 				EDF6AACE2C664DAD006E843C /* Products */,
 			);
@@ -121,8 +164,6 @@
 				EDDAF39E2CB6B0420073DBFC /* Adding */,
 				EDDAF3A42CBD057A0073DBFC /* Detail */,
 				EDDAF39F2CB94AA80073DBFC /* Home */,
-				EDF6AAF42C681FB7006E843C /* Controllers */,
-				EDF6AAF62C681FF0006E843C /* View */,
 				EDF6AAF52C681FD8006E843C /* Model */,
 				EDF6AAD02C664DAD006E843C /* AppDelegate.swift */,
 				EDF6AAD22C664DAD006E843C /* SceneDelegate.swift */,
@@ -134,36 +175,15 @@
 			path = task;
 			sourceTree = "<group>";
 		};
-		EDF6AAF42C681FB7006E843C /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				EDF6AAE62C66502F006E843C /* HomeViewController.swift */,
-				EDDAF3982CB28B430073DBFC /* AddingViewController.swift */,
-				EDDAF3922CAE91290073DBFC /* DetailPatternViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		EDF6AAF52C681FD8006E843C /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				ED7C6F3A2C8F0B1C009B511D /* PatternModel.swift */,
 				ED7C6F3C2C8F2A3C009B511D /* PaternData.swift */,
-				ED7C6F3E2C95841A009B511D /* HomeCellModel.swift */,
+				EDDAF3B22CE9FEBD0073DBFC /* Image.swift */,
+				EDDAF3B42CE9FEE90073DBFC /* Storage.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		EDF6AAF62C681FF0006E843C /* View */ = {
-			isa = PBXGroup;
-			children = (
-				ED7C6F342C6E30A1009B511D /* MenuView.swift */,
-				EDF6AAF22C67A013006E843C /* HomeTableViewCell.swift */,
-				EDDAF3A72CC7FFB90073DBFC /* DropDown.swift */,
-				EDDAF3A92CCD1AA60073DBFC /* ScrollViewForZoom.swift */,
-				EDDAF3A52CBFF7310073DBFC /* ImagePicker.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,20 +258,24 @@
 			files = (
 				EDF6AAE72C66502F006E843C /* HomeViewController.swift in Sources */,
 				EDDAF3992CB28B430073DBFC /* AddingViewController.swift in Sources */,
+				EDDAF3B32CE9FEBD0073DBFC /* Image.swift in Sources */,
 				ED7C6F452CA2F218009B511D /* HomeRouter.swift in Sources */,
 				EDF6AAD12C664DAD006E843C /* AppDelegate.swift in Sources */,
+				EDDAF3B52CE9FEE90073DBFC /* Storage.swift in Sources */,
 				ED7C6F432CA2F20A009B511D /* HomeAssembly.swift in Sources */,
 				EDDAF39D2CB6B02F0073DBFC /* AddingRouter.swift in Sources */,
 				EDDAF3932CAE91290073DBFC /* DetailPatternViewController.swift in Sources */,
 				EDDAF3A62CBFF7310073DBFC /* ImagePicker.swift in Sources */,
 				ED7C6F3D2C8F2A3C009B511D /* PaternData.swift in Sources */,
-				ED7C6F3F2C95841A009B511D /* HomeCellModel.swift in Sources */,
+				EDDAF3AF2CE7C61C0073DBFC /* DropDownCell.swift in Sources */,
 				EDDAF3952CAFF6D50073DBFC /* Errors.swift in Sources */,
+				EDDAF3B72CEA44D60073DBFC /* ChangeImage.swift in Sources */,
 				EDF6AAD32C664DAD006E843C /* SceneDelegate.swift in Sources */,
 				EDDAF3A82CC7FFB90073DBFC /* DropDown.swift in Sources */,
 				EDF6AAF32C67A013006E843C /* HomeTableViewCell.swift in Sources */,
 				EDDAF39B2CB6B0010073DBFC /* AddingPresenter.swift in Sources */,
 				ED7C6F352C6E30A1009B511D /* MenuView.swift in Sources */,
+				EDDAF3B12CE7C6840073DBFC /* DropDownView.swift in Sources */,
 				EDF6AAE52C665003006E843C /* HomePresenter.swift in Sources */,
 				EDDAF3A32CBD05590073DBFC /* DetailRouter.swift in Sources */,
 				ED7C6F3B2C8F0B1C009B511D /* PatternModel.swift in Sources */,
@@ -406,6 +430,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -436,6 +461,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

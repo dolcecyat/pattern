@@ -9,15 +9,25 @@ import Foundation
 import UIKit
 
 
-struct PatternsModel {
-    var patternImage: UIImage
+struct PatternsModel: Codable {
+    var patternImage: Image
     var patternName: String
     var patternDescription: String
     var category: PatternsCategory
     var isFavorite: Bool
     var numberOfViews: Int
     
-    enum PatternsCategory: CaseIterable {
+    init(patternImage: Image, patternName: String, patternDescription: String, category: PatternsCategory, isFavorite: Bool, numberOfViews: Int) {
+        self.patternImage = patternImage
+        self.patternName = patternName
+        self.patternDescription = patternDescription
+        self.category = category
+        self.isFavorite = isFavorite
+        self.numberOfViews = numberOfViews
+    }
+  
+    
+    enum PatternsCategory: CaseIterable, Codable {
         case Поведенческие
         case Порождающие
         case Структурные

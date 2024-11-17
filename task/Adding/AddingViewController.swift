@@ -8,7 +8,7 @@
 
 import UIKit
 private enum Constants {
-    static let defaultPickerViewCase = PatternsModel.PatternsCategory.Поведенческие
+    static let emptyPatternModel = PatternsModel(patternImage: Image(withImage: UIImage(resource: .abstractFactory)), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: 0)
     static let numberOfComponentsforPickerCategories = 1
     static let defaultTextForNameTextField = "Введите название паттерна"
     static let addNameLabel = "Название паттерна"
@@ -42,7 +42,8 @@ class AddingViewController: UIViewController, AddingDisplayLogic {
   
     var closure: ((PatternsModel)->())?
     
-    var model = PatternsModel(patternImage: UIImage(resource: .abstractFactory), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: .zero)
+    var model = Constants.emptyPatternModel
+//    PatternsModel(patternImage: UIImage(resource: .abstractFactory), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: .zero)
     
     // MARK: - Init
     
@@ -194,7 +195,7 @@ private extension AddingViewController {
     
     func setupAction() {
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
-        patternImageSelectionButton.addTarget(self, action: #selector(iselectImageButtonPressed), for: .touchUpInside)
+        patternImageSelectionButton.addTarget(self, action: #selector(selectImageButtonPressed), for: .touchUpInside)
     }
     
     // MARK: - Add Button
@@ -202,7 +203,7 @@ private extension AddingViewController {
     @objc func addButtonPressed() {
         model.patternName = patternNameTextField.text ?? ""
         model.patternDescription = descriptionTextView.text ?? ""
-        model.patternImage = patternImageSelectionButton.imageView?.image ??  UIImage()
+        model.patternImage = Image(withImage: patternImageSelectionButton.imageView?.image ?? UIImage())
         
         presenter?.addButtonPressed()
         closure?(model)
@@ -210,10 +211,10 @@ private extension AddingViewController {
     
     // MARK: - Add photot picker
     
-    @objc func iselectImageButtonPressed() {
-        imagePicker.showImagePicker(in: self) { image in
-            self.model.patternImage = image
-            self.patternImageSelectionButton.setImage(image, for: .normal)
+    @objc func selectImageButtonPressed() {
+        imagePicker.showImagePicker(in: self) { [weak self] image in
+            self?.model.patternImage = Image(withImage: image)
+            self?.patternImageSelectionButton.setImage(image, for: .normal)
         }
     }
 }
@@ -238,14 +239,11 @@ extension AddingViewController:  UIPickerViewDataSource,UIPickerViewDelegate {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == row })
         switch gategory {
         case .Поведенческие:
-            model.category = gategory ?? Constants.defaultPickerViewCase
-            print(model.category)
+            model.category = gategory ?? Constants.emptyPatternModel.category
         case .Структурные:
-            model.category = gategory ?? Constants.defaultPickerViewCase
-            print(model.category)
+            model.category = gategory ?? Constants.emptyPatternModel.category
         case .Порождающие:
-            model.category = gategory ?? Constants.defaultPickerViewCase
-            print(model.category)
+            model.category = gategory ?? Constants.emptyPatternModel.category
         case .none:
             print(Errors.ChangingPickerCaseForAddingModel)
         }

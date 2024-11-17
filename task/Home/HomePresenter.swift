@@ -7,14 +7,14 @@
 
 import UIKit
 private enum Constants {
-    static let emptyPatternModel = HomeCellModel(description: "", image: UIImage(resource: .abstractFactory), name: "", viewNumber: 0, isFavorite: false, category: .Поведенческие)
+    static let emptyPatternModel = PatternsModel(patternImage: Image(withImage: UIImage(resource: .abstractFactory)), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: 0)
 }
 
 protocol HomePresentationProtocol: AnyObject {
     var viewController: HomeDisplayLogic? {get set}
     var router: HomeRouterProtocol? {get set}
     
-    func cellInformation (indexPath: IndexPath) -> HomeCellModel
+    func cellInformation (indexPath: IndexPath) -> PatternsModel
     func filteredPatterns(group: PatternsModel.PatternsCategory)
     func countCells (section: Int) -> Int
     func selectPatternForDetails (indexPath: IndexPath)
@@ -22,17 +22,17 @@ protocol HomePresentationProtocol: AnyObject {
     func getNumberOfSections () -> Int
     func deletePattern (indexPath: IndexPath)
     func openPatternDetails (indexPath:IndexPath)
-    func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool)
+    func addingPatternToFavorite (indexPath: IndexPath)
     func openAddingVC()
     func getNewpattern(modelOfNewPattern: PatternsModel)
     func editPattertnAt(pattern: PatternsModel)
     func searchingPattern(searchText: String)
     func countSearchingCells() -> Int
-    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel
+    func searchingCellInformation(indexPath:IndexPath) -> PatternsModel
+    func addingSearchedPatternToFavorite (model: PatternsModel, isFavorite: Bool)
 }
 
 class HomePresenter: HomePresentationProtocol {
-
     //MARK: - MVP Properties
     
     weak var viewController: HomeDisplayLogic?
@@ -68,11 +68,7 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - Data for HomeTableView
     
     func getNumberOfSections () -> Int {
-        let filteredCategories = cellData.map { $0.category }
-        let setOfUniqueCategories = Set(filteredCategories)
-        let countCategoriesFromsetOfUniqueCategories = setOfUniqueCategories.count
-        return countCategoriesFromsetOfUniqueCategories
-//        PatternsModel.PatternsCategory.allCases.count
+       PatternsModel.PatternsCategory.allCases.count
     }
     
     func getSectionName (section: Int) -> String {
@@ -84,33 +80,29 @@ class HomePresenter: HomePresentationProtocol {
         var rowsInSection = 0
         switch gategory{
         case .Поведенческие:
-            rowsInSection = behavioralPatternsArray.count
+            rowsInSection = Storage.shared.behavioralStoredPatternsArray.count
         case .Структурные:
-            rowsInSection = structuralPatternsArray.count
+            rowsInSection = Storage.shared.structuralStoredPatternsArray.count
         case .Порождающие:
-            rowsInSection = genegativePatternsArray.count
+            rowsInSection = Storage.shared.generativeStoredPatternsArray.count
         case .none:
             print(Errors.CountCellsError)
         }
         return rowsInSection
     }
     
-    func  cellInformation (indexPath: IndexPath) -> HomeCellModel {
+    func  cellInformation (indexPath: IndexPath) -> PatternsModel {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
-        let categoryName = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section }) ?? .Поведенческие
             switch gategory {
             case .Поведенческие:
-                let modelPattern = behavioralPatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite, category: categoryName)
-              return modelForCell
+                let modelPattern = Storage.shared.behavioralStoredPatternsArray[indexPath.row]
+              return modelPattern
             case .Порождающие:
-                let modelPattern = genegativePatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite,category: categoryName)
-              return modelForCell
+                let modelPattern = Storage.shared.generativeStoredPatternsArray[indexPath.row]
+              return modelPattern
             case .Структурные:
-                let modelPattern = structuralPatternsArray[indexPath.row]
-                let modelForCell = HomeCellModel(description: modelPattern.patternDescription, image: modelPattern.patternImage, name: modelPattern.patternName, viewNumber: modelPattern.numberOfViews, isFavorite: modelPattern.isFavorite,category: categoryName)
-              return modelForCell
+                let modelPattern = Storage.shared.structuralStoredPatternsArray[indexPath.row]
+              return modelPattern
           case .none:
                 return Constants.emptyPatternModel
             }
@@ -122,17 +114,17 @@ class HomePresenter: HomePresentationProtocol {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
         case .Поведенческие:
-            behavioralPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:behavioralPatternsArray,indexPath: indexPath)
+            Storage.shared.behavioralStoredPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:Storage.shared.behavioralStoredPatternsArray, indexPath: indexPath)
         case .Структурные:
-            structuralPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:structuralPatternsArray,indexPath: indexPath)
+            Storage.shared.structuralStoredPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:Storage.shared.structuralStoredPatternsArray, indexPath: indexPath)
         case .Порождающие:
-            genegativePatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:genegativePatternsArray,indexPath: indexPath)
+            Storage.shared.generativeStoredPatternsArray[indexPath.row].numberOfViews = plusViews(patternInGroup:Storage.shared.generativeStoredPatternsArray, indexPath: indexPath)
         case .none:
             print(Errors.SelectingCellError)
         }
     }
     
-    private func plusViews(patternInGroup: [PatternsModel],indexPath: IndexPath)-> Int {
+    private func plusViews(patternInGroup: [PatternsModel], indexPath: IndexPath)-> Int {
         var views = patternInGroup[indexPath.row].numberOfViews
         views += 1
         return views
@@ -144,13 +136,13 @@ class HomePresenter: HomePresentationProtocol {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
         case .Поведенческие:
-            behavioralPatternsArray.remove(at: indexPath.row)
+            Storage.shared.behavioralStoredPatternsArray.remove(at: indexPath.row)
             viewController?.updateData()
         case .Структурные:
-            structuralPatternsArray.remove(at: indexPath.row)
+            Storage.shared.structuralStoredPatternsArray.remove(at: indexPath.row)
             viewController?.updateData()
         case .Порождающие:
-            genegativePatternsArray.remove(at: indexPath.row)
+            Storage.shared.generativeStoredPatternsArray.remove(at: indexPath.row)
             viewController?.updateData()
         case .none:
             print(Errors.DeletingCellError)
@@ -160,14 +152,15 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - Opening details about pattern
     
     func openPatternDetails (indexPath: IndexPath) {
+        currentOpenedDetailPatternAtIndexPath = indexPath
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
-            router?.showDetailVC(patternModel: behavioralPatternsArray[indexPath.row])
+            router?.showDetailVC(patternModel: Storage.shared.behavioralStoredPatternsArray[indexPath.row])
         case .Структурные:
-            router?.showDetailVC(patternModel: structuralPatternsArray[indexPath.row])
+            router?.showDetailVC(patternModel: Storage.shared.structuralStoredPatternsArray[indexPath.row])
         case .Порождающие:
-            router?.showDetailVC(patternModel: genegativePatternsArray[indexPath.row])
+            router?.showDetailVC(patternModel: Storage.shared.generativeStoredPatternsArray[indexPath.row])
         case .none:
             print(Errors.OpeningDetailError)
         }
@@ -175,19 +168,50 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Adding to Favorite
     
-    func addingPatternToFavorite (indexPath: IndexPath, isFavorite: Bool) {
+    func addingPatternToFavorite (indexPath: IndexPath) {
+        print(indexPath)
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
         case .Поведенческие:
-            behavioralPatternsArray[indexPath.row].isFavorite.toggle()
+            Storage.shared.behavioralStoredPatternsArray[indexPath.row].isFavorite = !Storage.shared.behavioralStoredPatternsArray[indexPath.row].isFavorite
         case .Структурные:
-            structuralPatternsArray[indexPath.row].isFavorite.toggle()
+            Storage.shared.structuralStoredPatternsArray[indexPath.row].isFavorite.toggle()
         case .Порождающие:
-            genegativePatternsArray[indexPath.row].isFavorite.toggle()
+            Storage.shared.generativeStoredPatternsArray[indexPath.row].isFavorite.toggle()
         case .none:
             print(Errors.ChangingFavoriteError)
         }
         viewController?.updateData()
+    }
+    
+    func addingSearchedPatternToFavorite (model: PatternsModel, isFavorite: Bool) {
+        print(model)
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: {$0 == model.category})
+        switch gategory{
+        case .Поведенческие:
+            behavioralPatternsArray = behavioralPatternsArray.map( {if $0.patternName == model.patternName{
+                var newPattern = $0
+                newPattern.isFavorite.toggle()
+                return newPattern
+            }
+                return $0})
+        case .Структурные:
+            structuralPatternsArray = structuralPatternsArray.map( {if $0.patternName == model.patternName{
+                var newPattern = $0
+                newPattern.isFavorite.toggle()
+                return newPattern
+            }
+                return $0})
+        case .Порождающие:
+            genegativePatternsArray = genegativePatternsArray.map( {if $0.patternName == model.patternName{
+                var newPattern = $0
+                newPattern.isFavorite.toggle()
+                return newPattern
+            }
+                return $0})
+        case .none:
+            print(1)
+        }
     }
     
     // MARK: - Open AddVC
@@ -199,20 +223,8 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - AddingNewPattern
     
     func getNewpattern(modelOfNewPattern: PatternsModel) {
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == modelOfNewPattern.category.description })
-        switch gategory{
-        case .Поведенческие:
-            behavioralPatternsArray.append(modelOfNewPattern)
-            viewController?.updateData()
-        case .Структурные:
-            structuralPatternsArray.append(modelOfNewPattern)
-            viewController?.updateData()
-        case .Порождающие:
-            genegativePatternsArray.append(modelOfNewPattern)
-            viewController?.updateData()
-        case .none:
-            print(Errors.FilteringPatternsError)
-        }
+        Storage.shared.savePattern(patternImage: modelOfNewPattern.patternImage, patternName: modelOfNewPattern.patternName, patternDescription: modelOfNewPattern.patternDescription, category: modelOfNewPattern.category, isFavorite: modelOfNewPattern.isFavorite, numberOfViews: modelOfNewPattern.numberOfViews)
+        viewController?.updateData()
     }
     
     // MARK: - Editing Pattern
@@ -222,13 +234,13 @@ class HomePresenter: HomePresentationProtocol {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.description == pattern.category.description })
         switch gategory{
         case .Поведенческие:
-            behavioralPatternsArray.insert(pattern, at: 0)
+            Storage.shared.behavioralStoredPatternsArray.insert(pattern, at: 0)
             viewController?.updateData()
         case .Структурные:
-            structuralPatternsArray.insert(pattern, at: 0)
+            Storage.shared.structuralStoredPatternsArray.insert(pattern, at: 0)
             viewController?.updateData()
         case .Порождающие:
-            genegativePatternsArray.insert(pattern, at: 0)
+            Storage.shared.generativeStoredPatternsArray.insert(pattern, at: 0)
             viewController?.updateData()
         case .none:
             print(Errors.FilteringPatternsError)
@@ -237,14 +249,13 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Searching
     
-    func searchingCellInformation(indexPath:IndexPath) -> HomeCellModel {
+    func searchingCellInformation(indexPath:IndexPath) -> PatternsModel {
         let modelForCell = searchedPatterns[indexPath.row]
-        let cellModel = HomeCellModel(description: modelForCell.patternDescription, image: modelForCell.patternImage, name: modelForCell.patternName, viewNumber: modelForCell.numberOfViews, isFavorite: modelForCell.isFavorite, category: modelForCell.category)
-        return cellModel
+        return modelForCell
     }
     
     func searchingPattern(searchText: String) {
-        let allPatternsForSearching = behavioralPatternsArray + structuralPatternsArray + genegativePatternsArray
+        let allPatternsForSearching = Storage.shared.behavioralStoredPatternsArray + Storage.shared.structuralStoredPatternsArray + Storage.shared.generativeStoredPatternsArray
        searchedPatterns = allPatternsForSearching.filter { $0.patternName.prefix(searchText.count) == searchText }
     }
     

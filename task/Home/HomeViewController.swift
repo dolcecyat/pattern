@@ -30,7 +30,7 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     //MARK: - UI properties
     
     var searchBar = UISearchBar()
-   
+
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     var menuView = MenuView()
     var menuViewWidthConstraint: NSLayoutConstraint?
@@ -57,7 +57,6 @@ class HomeViewController: UIViewController, HomeDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        filterPatterns()
         addViews()
         setupViews()
         makeConstraints()
@@ -93,7 +92,7 @@ private extension HomeViewController {
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         
         guard let navView = navigationController?.view else { return }
         
@@ -110,6 +109,7 @@ private extension HomeViewController {
     private func setupViews() {
         setupNavBar()
         configureHomeTableView()
+        self.view.backgroundColor = .white
         menuView.backgroundColor = .darkGray
         menuView.layer.zPosition = 1
     }
@@ -122,16 +122,17 @@ private extension HomeViewController {
         tableView.allowsMultipleSelection = true
         tableView.separatorInset.bottom = Constants.separatorInsertForBottomTableView
     }
-    
-    private func filterPatterns () {
-        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Структурные)
-        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Порождающие)
-        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Поведенческие)
-    }
+//    
+//    private func filterPatterns () {
+//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Структурные)
+//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Порождающие)
+//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Поведенческие)
+//    }
     
     //MARK: - setupNavBar
     
     private func setupNavBar() {
+        self.navigationController?.navigationBar.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.largeTitleTextAttributes =  [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title1)]
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -183,7 +184,7 @@ private extension HomeViewController {
     
     private func search(shouldShow: Bool) {
         showRightBarButtons(shouldShow: !shouldShow)
-        searching = shouldShow
+//        searching = shouldShow
         searchBar.showsCancelButton = shouldShow
         navigationItem.titleView = shouldShow ? searchBar : nil
     }
@@ -197,25 +198,30 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cellForTow = UITableViewCell()
+        
         if searching == false {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
                   let model = presenter?.cellInformation(indexPath: indexPath) else {return UITableViewCell() }
-            cell.configure(model: model)
-            cell.clousure = { [weak self] isFavorite in
+            cell.configure (model: model)
+            cell.clousure = { [weak self]  in
                 guard let self = self else {return}
-                self.presenter?.addingPatternToFavorite(indexPath: indexPath, isFavorite: isFavorite)
-            }
-            return cell
-        }else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell, let model = presenter?.searchingCellInformation(indexPath:indexPath) else {return UITableViewCell() }
-            cell.configure(model: model)
-            return cell
+                self.presenter?.addingPatternToFavorite(indexPath: indexPath) }
+            cellForTow = cell
+            
+        } else if searching == true {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell,
+                  let model = presenter?.searchingCellInformation(indexPath: indexPath) else {return UITableViewCell() }
+            cell.configure (model: model)
+            cell.clousure = { [weak self]  in
+                guard let self = self else {return}
+                self.presenter?.addingSearchedPatternToFavorite(model: model, isFavorite: true) }
+            cellForTow = cell
         }
+        return cellForTow
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        shouldExpanding = false
-        handleMenuToggle()
         presenter?.selectPatternForDetails(indexPath: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
         presenter?.openPatternDetails(indexPath: indexPath)
@@ -234,7 +240,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if searching == true {
             return ""
-        }else {
+        } else {
             return presenter?.getSectionName(section: section)
         }
     }
@@ -250,7 +256,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searching == false {
             return  presenter?.countCells(section: section) ?? .zero
-        }else {
+        } else {
             return presenter?.countSearchingCells() ?? .zero
         }
     }
@@ -261,11 +267,13 @@ extension HomeViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         search(shouldShow: false)
+        searching = false
         updateData()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         search(shouldShow: false)
+        searching = false
         updateData()
     }
     
@@ -276,10 +284,8 @@ extension HomeViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count > 2 {
+            searching = true
             presenter?.searchingPattern(searchText: searchText)
-            updateData()
-        }else if searchText.count == 0 {
-            search(shouldShow: false)
             updateData()
         }
     }

@@ -17,7 +17,7 @@ class ImagePicker: NSObject, UIImagePickerControllerDelegate, UINavigationContro
         self.complition = complition
         imagePickerController = UIImagePickerController()
         imagePickerController?.delegate = self
-        viewController.present(imagePickerController!, animated: true)
+        viewController.present(imagePickerController ?? UIImagePickerController(), animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

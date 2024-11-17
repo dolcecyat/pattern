@@ -14,14 +14,18 @@ class ScrollViewForZoom: UIScrollView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setUp()
+    }
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func setUp() {
         self.delegate = self
         self.minimumZoomScale = 1
         self.maximumZoomScale = 3
         self.showsHorizontalScrollIndicator = false
         self.showsVerticalScrollIndicator = false
-    }
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
     
     func setUpButton(_ button: UIButton) {
