@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  taskwithUIView
+
+  Created by Анатолий Коробских on 18.11.2024.
+  
+*/
+
+"behavioral" = "Behavioral";
+"generative" = "Generative";
+"structural" = "Structural";
+"adding.defaultTextForNameTextField" = "Enter the pattern name";
+"adding.addNameLabel" = "Name of pattern";
+"adding.defaultTextForDescriptionTextView" = "Enter the pattern description";
+"adding.descriptionLabel" = "Description of pattern";
+"adding.add" = "Add";
+"detail.groupString" = "Group: ";
+"detail.selectPhotoString" = "Change photo";
+"home.designPattensTitleForNavigationBar" = "Design patterns";
+"menu.oopPrinciplesLabel" = "OOP principles";
+"menu.designPatternsLabel" = "Design patterns";
+"menu.architecturalPatternsLabel" = "Architectural patterns";
+"menu.SOLIDPrinciplesLabel" = "SOLID principles";

@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
+private enum L10n {
+    static let structural = NSLocalizedString("structural", comment: "structural")
+    static let generative = NSLocalizedString("generative", comment: "generative")
+    static let behavioral = NSLocalizedString("behavioral", comment: "behavioral")
+}
 
 struct PatternsModel: Codable {
     var patternImage: Image
@@ -35,11 +40,11 @@ struct PatternsModel: Codable {
         var description: String {
             switch self {
             case .Порождающие:
-                return "Порождающие"
+                return L10n.generative
             case .Структурные:
-                return "Структурные"
+                return L10n.structural
             case .Поведенческие:
-                return "Поведенческие"
+                return L10n.behavioral
             }
         }
 

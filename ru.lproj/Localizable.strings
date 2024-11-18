@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  taskwithUIView
+
+  Created by Анатолий Коробских on 18.11.2024.
+  
+*/
+
+"behavioral" = "Поведенческие";
+"generative" = "Пораждающие";
+"Structural" = "Структурные";
+"adding.defaultTextForNameTextField" = "Введите название паттерна";
+"adding.addNameLabel" = "Название Паттерна";
+"adding.defaultTextForDescriptionTextView" = "Введите описание паттерна";
+"adding.descriptionLabel" = "Описание паттерна";
+"adding.add" = "Добавить";
+"detail.groupString" = "Группа: ";
+"detail.selectPhotoString" = "Изменить фото";
+"home.designPattensTitleForNavigationBar" = "Паттерны проектирования";
+"menu.oopPrinciplesLabel" = "Принципы ООП";
+"menu.designPatternsLabel" = "Паттерны проектирования";
+"menu.architecturalPatternsLabel" = "Архитектурные паттерны";
+"menu.SOLIDPrinciplesLabel" = "Принципы SOLID";
+
+

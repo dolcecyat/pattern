@@ -12,7 +12,7 @@ private enum Constants {
     static let plusImage = "plus"
     static let listBlletImage = "list.bullet"
     static let searchImage = "magnifyingglass"
-    static let designPattensTitleForNavigationBar = "Паттерны проектирования"
+    static let designPattensTitleForNavigationBar =  NSLocalizedString("home.designPattensTitleForNavigationBar", comment: "Design patterns")
     static let separatorInsertForBottomTableView = 10.0
     static let durationForShowMenuView = 0.5
 }

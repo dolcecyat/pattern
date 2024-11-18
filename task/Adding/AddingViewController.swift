@@ -10,11 +10,11 @@ import UIKit
 private enum Constants {
     static let emptyPatternModel = PatternsModel(patternImage: Image(withImage: UIImage(resource: .abstractFactory)), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: 0)
     static let numberOfComponentsforPickerCategories = 1
-    static let defaultTextForNameTextField = "Введите название паттерна"
-    static let addNameLabel = "Название паттерна"
-    static let defaultTextForDescriptionTextView = "Введите описание паттерна"
-    static let descriptionLabel = "Описание паттерна"
-    static let addButtonLabel = "Добавить"
+    static let defaultTextForNameTextField = NSLocalizedString("adding.defaultTextForNameTextField", comment: "Enter name of pattern")
+    static let addNameLabel = NSLocalizedString("adding.addNameLabel", comment: "Name of pattern")
+    static let defaultTextForDescriptionTextView = NSLocalizedString("adding.defaultTextForDescriptionTextView", comment: "Enter description of pattern")
+    static let descriptionLabel = NSLocalizedString("adding.descriptionLabel", comment: "Description of pattern")
+    static let addButtonLabel = NSLocalizedString("adding.add", comment: "Add")
     static let defaulAddImageButtonImage = "insertImage"
     static let defaultImage = UIImage(named: "abstract-factory")
 }

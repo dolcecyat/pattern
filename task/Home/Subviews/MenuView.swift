@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 private enum Constans {
-    static let oopPrinciplesLabel = "Принципы ООП"
-    static let designPatternsLabel = "Паттерны проектирования"
-    static let architecturalPatternsLabel = "Архитектурные паттерны"
-    static let SOLIDPrinciplesLabel = "Принципы SOLID"
+    static let oopPrinciplesLabel = NSLocalizedString("menu.oopPrinciplesLabel" , comment: "Принципы ООП")
+    static let designPatternsLabel = NSLocalizedString("menu.designPatternsLabel" , comment: "Паттерны проектирования")
+    static let architecturalPatternsLabel = NSLocalizedString("menu.architecturalPatternsLabel" , comment: "Архитектурные паттерны")
+    static let SOLIDPrinciplesLabel = NSLocalizedString("menu.SOLIDPrinciplesLabel" , comment: "Принципы SOLID")
     static let arrowRightImage = "arrow.right"
 }
 class MenuView: UIView {

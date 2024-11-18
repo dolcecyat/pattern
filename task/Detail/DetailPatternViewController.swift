@@ -10,12 +10,12 @@ import UIKit
 private enum Constants {
     static let redHeartImage = "redHeart"
     static let greyHeartImage = "greyHeart"
-    static let groupString = "Группа: "
+    static let groupString = NSLocalizedString("detail.groupString", comment: "Group")
     static let editBarButtonImageName = "rectangle.and.pencil.and.ellipsis.rtl"
     static let defaultImage = UIImage(named: "abstract-factory")
     static let numberOfComponentsforPickerCategories = 1
     static let endEditingBarButoonImage = "checkmark.circle"
-    static let selectPhotoString = "Изменить фото"
+    static let selectPhotoString = NSLocalizedString("detail.selectPhotoString", comment: "Change photo")
     static let emptyPatternModel = PatternsModel(patternImage:Image(withImage: UIImage(resource: .abstractFactory)), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: 0)
 }
 
