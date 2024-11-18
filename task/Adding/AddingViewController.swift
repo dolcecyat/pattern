@@ -43,7 +43,6 @@ class AddingViewController: UIViewController, AddingDisplayLogic {
     var closure: ((PatternsModel)->())?
     
     var model = Constants.emptyPatternModel
-//    PatternsModel(patternImage: UIImage(resource: .abstractFactory), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: .zero)
     
     // MARK: - Init
     
@@ -204,7 +203,6 @@ private extension AddingViewController {
         model.patternName = patternNameTextField.text ?? ""
         model.patternDescription = descriptionTextView.text ?? ""
         model.patternImage = Image(withImage: patternImageSelectionButton.imageView?.image ?? UIImage())
-        
         presenter?.addButtonPressed()
         closure?(model)
     }
@@ -250,7 +248,6 @@ extension AddingViewController:  UIPickerViewDataSource,UIPickerViewDelegate {
     }
 }
 // MARK: - UITextFieldDelegate
-
 extension AddingViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -260,7 +257,6 @@ extension AddingViewController: UITextFieldDelegate {
 }
 
 // MARK: - UITextView
-
 extension AddingViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {

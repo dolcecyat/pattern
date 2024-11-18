@@ -68,11 +68,11 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - Data for HomeTableView
     
     func getNumberOfSections () -> Int {
-       PatternsModel.PatternsCategory.allCases.count
+        PatternsModel.PatternsCategory.allCases.count
     }
     
     func getSectionName (section: Int) -> String {
-        return PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == section })?.description ?? ""
+        PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == section })?.description ?? ""
     }
 
     func countCells (section: Int) -> Int {
@@ -93,24 +93,24 @@ class HomePresenter: HomePresentationProtocol {
     
     func  cellInformation (indexPath: IndexPath) -> PatternsModel {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
-            switch gategory {
-            case .Поведенческие:
-                let modelPattern = Storage.shared.behavioralStoredPatternsArray[indexPath.row]
-              return modelPattern
-            case .Порождающие:
-                let modelPattern = Storage.shared.generativeStoredPatternsArray[indexPath.row]
-              return modelPattern
-            case .Структурные:
-                let modelPattern = Storage.shared.structuralStoredPatternsArray[indexPath.row]
-              return modelPattern
-          case .none:
-                return Constants.emptyPatternModel
-            }
+        switch gategory {
+        case .Поведенческие:
+            let modelPattern = Storage.shared.behavioralStoredPatternsArray[indexPath.row]
+            return modelPattern
+        case .Порождающие:
+            let modelPattern = Storage.shared.generativeStoredPatternsArray[indexPath.row]
+            return modelPattern
+        case .Структурные:
+            let modelPattern = Storage.shared.structuralStoredPatternsArray[indexPath.row]
+            return modelPattern
+        case .none:
+            return Constants.emptyPatternModel
         }
+    }
     
     // MARK: - View number of pattern
 
-    func selectPatternForDetails (indexPath: IndexPath) {
+    func selectPatternForDetails(indexPath: IndexPath) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
         case .Поведенческие:
@@ -132,7 +132,7 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Deleting Patterns
     
-    func deletePattern (indexPath: IndexPath) {
+    func deletePattern(indexPath: IndexPath) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory{
         case .Поведенческие:
@@ -151,7 +151,7 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Opening details about pattern
     
-    func openPatternDetails (indexPath: IndexPath) {
+    func openPatternDetails(indexPath: IndexPath) {
         currentOpenedDetailPatternAtIndexPath = indexPath
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
@@ -168,7 +168,7 @@ class HomePresenter: HomePresentationProtocol {
     
     // MARK: - Adding to Favorite
     
-    func addingPatternToFavorite (indexPath: IndexPath) {
+    func addingPatternToFavorite(indexPath: IndexPath) {
         print(indexPath)
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
         switch gategory {
@@ -185,33 +185,8 @@ class HomePresenter: HomePresentationProtocol {
     }
     
     func addingSearchedPatternToFavorite (model: PatternsModel, isFavorite: Bool) {
-        print(model)
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: {$0 == model.category})
-        switch gategory{
-        case .Поведенческие:
-            behavioralPatternsArray = behavioralPatternsArray.map( {if $0.patternName == model.patternName{
-                var newPattern = $0
-                newPattern.isFavorite.toggle()
-                return newPattern
-            }
-                return $0})
-        case .Структурные:
-            structuralPatternsArray = structuralPatternsArray.map( {if $0.patternName == model.patternName{
-                var newPattern = $0
-                newPattern.isFavorite.toggle()
-                return newPattern
-            }
-                return $0})
-        case .Порождающие:
-            genegativePatternsArray = genegativePatternsArray.map( {if $0.patternName == model.patternName{
-                var newPattern = $0
-                newPattern.isFavorite.toggle()
-                return newPattern
-            }
-                return $0})
-        case .none:
-            print(1)
-        }
+        Storage.shared.upDatePattern(model: model)
+        viewController?.updateData()
     }
     
     // MARK: - Open AddVC

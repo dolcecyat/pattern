@@ -15,6 +15,9 @@ private enum Constants {
     static let defaultImage = UIImage(named: "abstract-factory")
     static let numberOfComponentsforPickerCategories = 1
     static let endEditingBarButoonImage = "checkmark.circle"
+    static let imageForChangingDescriptionSign =  ChangeImage(image: UIImage(systemName:"rectangle.and.pencil.and.ellipsis.rtl")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
+    static let imageForChangingNameSign =  ChangeImage(image: UIImage(systemName:"rectangle.and.pencil.and.ellipsis.rtl")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
+    static let imageForChangingCategorySign = ChangeImage(image: UIImage(systemName: "arrowshape.down")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
     static let selectPhotoString = NSLocalizedString("detail.selectPhotoString", comment: "Change photo")
     static let emptyPatternModel = PatternsModel(patternImage:Image(withImage: UIImage(resource: .abstractFactory)), patternName: "", patternDescription: "", category: .Поведенческие, isFavorite: false, numberOfViews: 0)
 }
@@ -43,9 +46,9 @@ class DetailPatternViewController: UIViewController, DetailPatternDisplayLogic {
     //MARK: - UI properties
     private let imagePicker = ImagePicker()
     
-    private let opentoChangeCategoryImage = ChangeImage(image: UIImage(systemName: "arrowshape.down")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
-    private let opentoChangeNameImage = ChangeImage(image: UIImage(systemName:"rectangle.and.pencil.and.ellipsis.rtl")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
-    private let opentoChangeDescriptionImage = ChangeImage(image: UIImage(systemName:"rectangle.and.pencil.and.ellipsis.rtl")?.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal))
+    private let opentoChangeCategoryImage = Constants.imageForChangingCategorySign
+    private let opentoChangeNameImage = Constants.imageForChangingNameSign
+    private let opentoChangeDescriptionImage = Constants.imageForChangingDescriptionSign
     private let patternImage = UIButton ()
     private let zoomingPhoto = ScrollViewForZoom()
     private let favoriteImage = UIImageView()
@@ -105,9 +108,9 @@ private extension DetailPatternViewController {
     //MARK: - addViews
     
     private func addViews() {
+        view.addSubview(zoomingPhoto)
         view.addSubview(patternNameTextView)
         view.addSubview(patternDescriptionTextView)
-        view.addSubview(zoomingPhoto)
         view.addSubview(favoriteImage)
         view.addSubview(opentoChangeNameImage)
         view.addSubview(opentoChangeCategoryImage)
@@ -128,7 +131,6 @@ private extension DetailPatternViewController {
         opentoChangeCategoryImage.translatesAutoresizingMaskIntoConstraints = false
         opentoChangeDescriptionImage.translatesAutoresizingMaskIntoConstraints = false
         changeTypeButton.translatesAutoresizingMaskIntoConstraints = false
-
         
         NSLayoutConstraint.activate([
             zoomingPhoto.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
@@ -141,6 +143,11 @@ private extension DetailPatternViewController {
             patternNameTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
             patternNameTextView.heightAnchor.constraint(equalToConstant: 50),
             
+            changeTypeButton.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 20),
+            changeTypeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
+            changeTypeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            changeTypeButton.heightAnchor.constraint(equalToConstant: 30),
+            
             patternDescriptionTextView.topAnchor.constraint(equalTo: changeTypeButton.bottomAnchor, constant: 30),
             patternDescriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
             patternDescriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
@@ -150,39 +157,31 @@ private extension DetailPatternViewController {
             opentoChangeDescriptionImage.rightAnchor.constraint(equalTo: patternDescriptionTextView.rightAnchor,constant: -10),
             opentoChangeDescriptionImage.heightAnchor.constraint(equalToConstant: 25),
             
+            opentoChangeNameImage.topAnchor.constraint(equalTo: patternNameTextView.topAnchor,constant: 10),
+            opentoChangeNameImage.rightAnchor.constraint(equalTo: patternNameTextView.rightAnchor,constant: -10),
+            opentoChangeNameImage.heightAnchor.constraint(equalToConstant: 20),
+            
             favoriteImage.topAnchor.constraint(equalTo: zoomingPhoto.bottomAnchor, constant: 35),
             favoriteImage.trailingAnchor.constraint(equalTo: patternNameTextView.leadingAnchor,constant: -2),
             favoriteImage.heightAnchor.constraint(equalToConstant: 18),
             favoriteImage.widthAnchor.constraint(equalToConstant: 18),
-            
-            changeTypeButton.topAnchor.constraint(equalTo: patternNameTextView.bottomAnchor, constant: 20),
-            changeTypeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36),
-            changeTypeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
-            changeTypeButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            opentoChangeNameImage.topAnchor.constraint(equalTo: patternNameTextView.topAnchor,constant: 10),
-            opentoChangeNameImage.rightAnchor.constraint(equalTo: patternNameTextView.rightAnchor,constant: -10),
-            opentoChangeNameImage.heightAnchor.constraint(equalToConstant: 25),
-            
-           
-            
         ])
     }
-    // MARK: - SetUp Delegates
     
+    // MARK: - SetUp Delegates
     private func setUpDelegates() {
         patternDescriptionTextView.delegate = self
         patternNameTextView.delegate = self
     }
-    // MARK: - SetUp NavBar
     
+    // MARK: - SetUp NavBar
     private func setUpNavBar() {
-        self.navigationItem.rightBarButtonItem = editingMode == true ?
+        self.navigationItem.rightBarButtonItem = editingMode ?
         UIBarButtonItem(image:  UIImage(systemName: Constants.endEditingBarButoonImage)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(endEditing)) :
         UIBarButtonItem(image:  UIImage(systemName: Constants.editBarButtonImageName)!.withTintColor(UIColor(.black), renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(edit))
     }
-    //MARK: - setupViews
     
+    //MARK: - setupViews
     private func setupViews() {
         view.backgroundColor = .systemBackground
         
@@ -254,7 +253,6 @@ private extension DetailPatternViewController {
         if editingMode {
             imagePicker.showImagePicker(in: self) { [weak self]
                 image in
-//                self?.patternImage.setImage(image, for: .normal)
                 self?.patternImage.setImage(image, for: .disabled)
             }
         }
@@ -302,7 +300,7 @@ private extension DetailPatternViewController {
     
     @objc func keyboardWillChange(notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]) as? CGRect else { return }
-        if   notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification  {
+        if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification  {
             patternNameTextView.isFirstResponder ? (view.frame.origin.y = 0) : (view.frame.origin.y = -keyboardRect.height)
         } else {
             view.frame.origin.y = 0

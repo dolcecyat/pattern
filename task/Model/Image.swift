@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
-struct Image: Codable{
+struct Image: Codable {
+    
     let imageData: Data?
     
     init(withImage image: UIImage) {
         self.imageData = image.pngData()
     }
-
+    
     func getImage() -> UIImage? {
         guard let imageData = self.imageData else {
             return nil

@@ -10,7 +10,7 @@ import UIKit
 
 class ChangeImage: UIImageView {
     
-     let image1: UIImage?
+    let image1: UIImage?
     
     override init(image: UIImage?) {
         self.image1 = image
@@ -25,13 +25,11 @@ class ChangeImage: UIImageView {
         if open {
             ChangeImage.animate(withDuration: 0.5, delay: 0.1, animations: { [weak self] in
                 self?.transform = CGAffineTransform(rotationAngle: 180.0 * 3.14/180.0)
-                })
-        }else {
+            })
+        } else {
             ChangeImage.animate(withDuration: 0.5, delay: 0.1, animations: { [weak self] in
                 self?.transform = CGAffineTransform(rotationAngle: 0.0 * 3.14/180.0)
-                })
-        }
-        
+            })
         }
     }
-
+}

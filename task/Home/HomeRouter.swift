@@ -22,18 +22,16 @@ class HomeRouter: HomeRouterProtocol {
     func showDetailVC(patternModel: PatternsModel) {
         let VCToOpen = DetailPatternViewController()
         VCToOpen.model = patternModel
-        VCToOpen.closure = { value in
-            self.presenter?.editPattertnAt(pattern: value)
+        VCToOpen.closure = {[weak self] value in
+            self?.presenter?.editPattertnAt(pattern: value)
         }
-    presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
-}
-
-
-
+        presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
+    }
+    
     func showAddingVC() {
         let VCToOpen = AddingViewController()
-        VCToOpen.closure = { value in
-            self.presenter?.getNewpattern(modelOfNewPattern: value)
+        VCToOpen.closure = { [weak self] value in
+            self?.presenter?.getNewpattern(modelOfNewPattern: value)
         }
         presenter?.viewController?.navigationController?.pushViewController(VCToOpen, animated: true)
     }

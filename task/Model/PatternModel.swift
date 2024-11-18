@@ -30,7 +30,6 @@ struct PatternsModel: Codable {
         self.isFavorite = isFavorite
         self.numberOfViews = numberOfViews
     }
-  
     
     enum PatternsCategory: CaseIterable, Codable {
         case Поведенческие

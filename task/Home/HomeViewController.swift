@@ -122,13 +122,6 @@ private extension HomeViewController {
         tableView.allowsMultipleSelection = true
         tableView.separatorInset.bottom = Constants.separatorInsertForBottomTableView
     }
-//    
-//    private func filterPatterns () {
-//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Структурные)
-//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Порождающие)
-//        presenter?.filteredPatterns(group: PatternsModel.PatternsCategory.Поведенческие)
-//    }
-    
     //MARK: - setupNavBar
     
     private func setupNavBar() {
@@ -162,8 +155,8 @@ private extension HomeViewController {
             menuViewWidthConstraint = menuView.widthAnchor.constraint(equalToConstant: .zero)
             menuViewWidthConstraint?.isActive = true
         }
-        UIView.animate(withDuration: Constants.durationForShowMenuView) {
-            self.navigationController?.view.layoutIfNeeded()
+        UIView.animate(withDuration: Constants.durationForShowMenuView) { [weak self] in
+            self?.navigationController?.view.layoutIfNeeded()
         }
         self.shouldExpanding.toggle()
     }
@@ -177,14 +170,13 @@ private extension HomeViewController {
     private func showRightBarButtons(shouldShow: Bool) {
         if shouldShow {
             navigationItem.rightBarButtonItems = [menuRightNavBarButton,searchRightNavBarButton]
-        }else {
+        } else {
             navigationItem.rightBarButtonItems = []
         }
     }
     
     private func search(shouldShow: Bool) {
         showRightBarButtons(shouldShow: !shouldShow)
-//        searching = shouldShow
         searchBar.showsCancelButton = shouldShow
         navigationItem.titleView = shouldShow ? searchBar : nil
     }
@@ -229,8 +221,8 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: Constants.deleteSwipeAction) { [self] (action, sourceView, completionHandler) in
-            presenter?.deletePattern(indexPath: indexPath)
+        let deleteAction = UIContextualAction(style: .destructive, title: Constants.deleteSwipeAction) { [weak self] (action, sourceView, completionHandler) in
+            self?.presenter?.deletePattern(indexPath: indexPath)
             tableView.reloadData()
         }
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
@@ -248,7 +240,7 @@ extension HomeViewController: UITableViewDelegate,  UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if searching == false {
             presenter?.getNumberOfSections() ?? .zero
-        }else {
+        } else {
             1
         }
     }

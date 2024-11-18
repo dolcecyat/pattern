@@ -8,7 +8,7 @@
 import UIKit
 
 private enum Constants {
-    static let groupString = "Группа: "
+    static let groupString = NSLocalizedString("detail.groupString", comment: "Group")
 }
 
 protocol DropDownProtocol {

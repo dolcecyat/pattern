@@ -16,6 +16,8 @@ enum Errors {
     case ChangingFavoriteError
     case ChangingPickerCaseForAddingModel
     case ChangingPickerCaseForPatternEditing
+    case SavingPattern
+    case UpDatingPattern
     
     
     var description: String {
@@ -37,6 +39,10 @@ enum Errors {
             return "Error with changing picker case for picking category for new pattern"
         case .ChangingPickerCaseForPatternEditing:
             return "Error with changing picker case in editing mode"
+        case .SavingPattern:
+            return "Problem with storage"
+        case .UpDatingPattern:
+            return "Problem with updating"
         }
     }
 }

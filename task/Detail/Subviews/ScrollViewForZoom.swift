@@ -10,12 +10,13 @@ import UIKit
 
 class ScrollViewForZoom: UIScrollView {
     
-    var button: UIButton?
+    var buttonIn: UIButton?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUp()
     }
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -29,19 +30,20 @@ class ScrollViewForZoom: UIScrollView {
     }
     
     func setUpButton(_ button: UIButton) {
-        self.button = button
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(button)
-        NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalTo: self.widthAnchor),
-            button.heightAnchor.constraint(equalTo: self.heightAnchor),
-            button.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-        ])
+        self.buttonIn = button
+        if let buttonIn {
+            buttonIn.translatesAutoresizingMaskIntoConstraints = false
+            self.addSubview(buttonIn)
+            NSLayoutConstraint.activate([
+                buttonIn.widthAnchor.constraint(equalTo: self.widthAnchor),
+                buttonIn.heightAnchor.constraint(equalTo: self.heightAnchor),
+                buttonIn.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                buttonIn.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            ])}
     }
 }
 extension ScrollViewForZoom: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        button
+        buttonIn
     }
 }
