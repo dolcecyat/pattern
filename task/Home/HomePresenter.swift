@@ -133,20 +133,9 @@ class HomePresenter: HomePresentationProtocol {
     // MARK: - Deleting Patterns
     
     func deletePattern(indexPath: IndexPath) {
-        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
-        switch gategory{
-        case .Поведенческие:
-            Storage.shared.behavioralStoredPatternsArray.remove(at: indexPath.row)
-            viewController?.updateData()
-        case .Структурные:
-            Storage.shared.structuralStoredPatternsArray.remove(at: indexPath.row)
-            viewController?.updateData()
-        case .Порождающие:
-            Storage.shared.generativeStoredPatternsArray.remove(at: indexPath.row)
-            viewController?.updateData()
-        case .none:
-            print(Errors.DeletingCellError)
-        }
+        Storage.shared.deletePattern(indexPath: indexPath)
+        viewController?.updateData()
+        
     }
     
     // MARK: - Opening details about pattern

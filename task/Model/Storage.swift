@@ -7,55 +7,61 @@
 
 import Foundation
 
-class Storage {
-    let defaults = UserDefaults.standard
+enum Keys {
+    static let behavioral = "behavioralStoredPatternsArray"
+    static let generative = "generativeStoredPatternsArray"
+    static let structural = "structuralStoredPatternsArray"
+}
 
+class Storage {
+    
+    let defaults = UserDefaults.standard
+    
     static let shared = Storage()
     
     var behavioralStoredPatternsArray: [PatternsModel] {
         get {
-            if let data = defaults.value(forKey: "behavioralStoredPatternsArray") as? Data {
-                return try! PropertyListDecoder().decode([PatternsModel].self, from: data)
-            }else {
-                return [PatternsModel]()
-            }
+            getFunc(key: Keys.behavioral)
         }
         set {
-            if let data = try? PropertyListEncoder().encode(newValue){
-                defaults.set(data, forKey: "behavioralStoredPatternsArray")
-            }
+            setFunc(key: Keys.behavioral, newValue: newValue)
         }
     }
     
     var generativeStoredPatternsArray: [PatternsModel] {
         get {
-            if let data = defaults.value(forKey: "generativeStoredPatternsArray") as? Data {
-                return try! PropertyListDecoder().decode([PatternsModel].self, from: data)
-            }else {
-                return [PatternsModel]()
-            }
+            getFunc(key: Keys.generative)
         }
         set {
-            if let data = try? PropertyListEncoder().encode(newValue){
-                defaults.set(data, forKey: "generativeStoredPatternsArray")
-            }
+            setFunc(key: Keys.generative, newValue: newValue)
         }
     }
     
     var structuralStoredPatternsArray: [PatternsModel] {
         get {
-            if let data = defaults.value(forKey: "structuralStoredPatternsArray") as? Data {
-                return try! PropertyListDecoder().decode([PatternsModel].self, from: data)
-            }else {
-                return [PatternsModel]()
-            }
+            getFunc(key: Keys.structural)
         }
         set {
-            if let data = try? PropertyListEncoder().encode(newValue){
-                defaults.set(data, forKey: "structuralStoredPatternsArray")
-            }
+            setFunc(key: Keys.structural, newValue: newValue)
         }
     }
+    
+    // MARK: - Get Set funcs
+    
+    func getFunc(key: String) -> [PatternsModel] {
+        if let data = defaults.value(forKey: key) as? Data {
+            return try! PropertyListDecoder().decode([PatternsModel].self, from: data)
+        }else {
+            return [PatternsModel]()
+        }
+    }
+    
+    func setFunc(key: String, newValue: [PatternsModel]) {
+        if let data = try? PropertyListEncoder().encode(newValue){
+            defaults.set(data, forKey: key)
+        }
+    }
+    // MARK: - Save func
     
     func savePattern(patternImage: Image, patternName: String ,patternDescription: String ,category: PatternsModel.PatternsCategory ,isFavorite: Bool, numberOfViews: Int) {
         let pattern  = PatternsModel(patternImage: patternImage, patternName: patternName, patternDescription: patternDescription, category:category, isFavorite: isFavorite, numberOfViews: numberOfViews)
@@ -72,6 +78,19 @@ class Storage {
         }
     }
     
+    func deletePattern (indexPath: IndexPath){
+        let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0.sectionNumber == indexPath.section })
+        switch gategory {
+        case .Поведенческие:
+            Storage.shared.behavioralStoredPatternsArray.remove(at: indexPath.row)
+        case .Структурные:
+            Storage.shared.structuralStoredPatternsArray.remove(at: indexPath.row)
+        case .Порождающие:
+            Storage.shared.generativeStoredPatternsArray.remove(at: indexPath.row)
+        case .none:
+            print(Errors.DeletingCellError)
+        }
+}
     func upDatePattern(model: PatternsModel) {
         let gategory = PatternsModel.PatternsCategory.allCases.first(where: { $0 == model.category})
         switch gategory {
